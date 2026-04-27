@@ -1,0 +1,11 @@
+C:\Users\Ric\source\repos\reactproject1\EDMCore\bin\Debug\net8.0\EDMCore.deps.json
+C:\Users\Ric\source\repos\reactproject1\EDMCore\bin\Debug\net8.0\EDMCore.dll
+C:\Users\Ric\source\repos\reactproject1\EDMCore\bin\Debug\net8.0\EDMCore.pdb
+C:\Users\Ric\source\repos\reactproject1\EDMCore\obj\Debug\net8.0\EDMCore.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ric\source\repos\reactproject1\EDMCore\obj\Debug\net8.0\EDMCore.AssemblyInfoInputs.cache
+C:\Users\Ric\source\repos\reactproject1\EDMCore\obj\Debug\net8.0\EDMCore.AssemblyInfo.cs
+C:\Users\Ric\source\repos\reactproject1\EDMCore\obj\Debug\net8.0\EDMCore.csproj.CoreCompileInputs.cache
+C:\Users\Ric\source\repos\reactproject1\EDMCore\obj\Debug\net8.0\EDMCore.dll
+C:\Users\Ric\source\repos\reactproject1\EDMCore\obj\Debug\net8.0\refint\EDMCore.dll
+C:\Users\Ric\source\repos\reactproject1\EDMCore\obj\Debug\net8.0\EDMCore.pdb
+C:\Users\Ric\source\repos\reactproject1\EDMCore\obj\Debug\net8.0\ref\EDMCore.dll

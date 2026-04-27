@@ -1,0 +1,87 @@
+.side-nav {
+    width: 240px;
+    background: #1e293b; /* dark slate */
+    min-height: calc(100vh - 70px);
+    position: fixed;
+    top: 70px;
+    left: 0;
+    z-index: 99;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 16px 12px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.08);
+}
+
+/* Reset */
+.side-nav nav,
+.side-nav ul {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+/* List items spacing */
+.side-nav li {
+    width: 100%;
+    margin-bottom: 4px;
+}
+
+/* Links */
+.side-nav-link {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    padding: 10px 14px;
+
+    color: #cbd5e1; /* soft text */
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+
+    border-radius: 8px;
+    transition: all 0.2s ease;
+
+    box-sizing: border-box;
+}
+
+/* Hover */
+.side-nav-link:hover {
+    background: #334155;
+    color: #ffffff;
+    transform: translateX(2px); /* subtle motion */
+}
+
+/* Active */
+.side-nav-link.active {
+    background: #2563eb;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Optional: add section spacing */
+.side-nav nav ul + ul {
+    margin-top: 16px;
+    border-top: 1px solid #334155;
+    padding-top: 12px;
+}
+
+.side-nav-link.active {
+    background: #2563eb;
+    color: #fff;
+    position: relative;
+}
+
+.side-nav-link.active::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 6px;
+    bottom: 6px;
+    width: 4px;
+    border-radius: 4px;
+    background: #60a5fa;
+}
