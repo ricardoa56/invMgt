@@ -31,6 +31,14 @@ namespace Inventory.API.Controllers
         }
 
         // GET: api/Product
+        [HttpGet("dd")]
+        public async Task<ActionResult<GetProductDDResponse>> GetAllforDropdown()
+        {
+            var products = await _productHandler.GetAllProductsForDropdownAsync();
+            return products == null ? NotFound() : Ok(products);
+        }
+
+        // GET: api/Product
         [HttpGet("prices")]
         public async Task<ActionResult<GetProductResponse>> GetAllNotInProductPrice()
         {

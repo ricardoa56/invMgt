@@ -1,6 +1,7 @@
 ﻿using Inventory.Contract;
 using Inventory.Domain;
 using Inventory.Domain.Models;
+using InventoryDomain;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -78,21 +79,82 @@ namespace Inventory.Handlers
 
         public async Task<InventoryBalance> ReceiveStockAsync(StockReceiveRequest request)
         {
-            var invBalance = this.db.InventoryBalances.FirstOrDefault(ib => ib.ProductId == request.ProductId);
-            if (invBalance != null)
+            using var transaction = await this.db.Database.BeginTransactionAsync();
+            try
             {
-                invBalance.QuantityOnHand += request.ReceivedQuantity;
-                invBalance.LastRestockDate = DateTime.UtcNow;
-                await this.db.SaveChangesAsync();
-                return invBalance;
-            }
-            else
-            {
-                return await this.CreateInventoryBalanceAsync(new InventoryBalanceRequest
+                var invTransaction = new StockTransaction
                 {
                     ProductId = request.ProductId,
-                    QuantityOnHand = request.ReceivedQuantity
-                });
+                    Quantity = request.Quantity,
+                    TransactionType = TransactionType.In,
+                    CreatedDate = DateTime.UtcNow,
+                    CreatedBy = request.CreatedBy,
+                    ReferenceNumber = request.ReferenceNumber,
+                    Remarks = request.Remarks
+                };
+                this.db.StockTransactions.Add(invTransaction);
+                var invBalance = await this.db.InventoryBalances
+                    .FirstOrDefaultAsync(ib => ib.ProductId == request.ProductId);
+
+                if (invBalance == null)
+                {
+                    invBalance = new InventoryBalance
+                    {
+                        ProductId = request.ProductId,
+                        QuantityOnHand = request.Quantity,
+                        LastRestockDate = DateTime.UtcNow,
+                    };
+                    this.db.InventoryBalances.Add(invBalance);
+                }
+                else
+                {
+                    invBalance.QuantityOnHand += request.Quantity;
+                    invBalance.LastRestockDate = DateTime.UtcNow;
+                }
+
+                await this.db.SaveChangesAsync();
+                await transaction.CommitAsync();
+                return invBalance;
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
+
+        public async Task<InventoryBalance> AdjustStockAsync(StockAdjustmentRequest request)
+        {
+            using var transaction = await this.db.Database.BeginTransactionAsync();
+            try
+            {
+                var invTransaction = new StockTransaction
+                {
+                    ProductId = request.ProductId,
+                    Quantity = request.Quantity,
+                    TransactionType = TransactionType.Adjustment,
+                    CreatedDate = DateTime.UtcNow,
+                    CreatedBy = request.CreatedBy,
+                    ReferenceNumber = request.ReferenceNumber,
+                    Remarks = request.Remarks
+                };
+                this.db.StockTransactions.Add(invTransaction);
+
+                var invBalance = await this.db.InventoryBalances
+                    .SingleAsync(ib => ib.ProductId == request.ProductId);
+
+                invBalance.QuantityOnHand += request.Quantity;
+                invBalance.ModifiedDate = DateTime.UtcNow;
+
+                await this.db.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                return invBalance;
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                throw new Exception($"Failed to adjust stock for Product ID {request.ProductId}. Ensure inventory balance exists.", ex);
             }
         }
     }

@@ -8,6 +8,7 @@
         public int CategoryId { get; set; }
         public int UnitOfMeasurementId { get; set; }
         public int CreatedBy { get; set; }
+        public decimal Quantity { get; set; }
 
         public string ImageName { get; set; } = null!;
         public string Category { get; set; } = null!;

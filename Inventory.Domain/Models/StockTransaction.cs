@@ -6,7 +6,6 @@ namespace Inventory.Domain.Models
     {
         public int StockTransactionId { get; set; }
         public int ProductId { get; set; }
-        public int? WarehouseId { get; set; } = null;
         public decimal Quantity { get; set; }
         public TransactionType TransactionType { get; set; } 
         public string ReferenceNumber { get; set; } = string.Empty;
@@ -18,6 +17,5 @@ namespace Inventory.Domain.Models
 
         // Navigation properties
         public Product? Product { get; set; }
-        public Warehouse? Warehouse { get; set; }
     }
 }

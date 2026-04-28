@@ -78,5 +78,23 @@ namespace Inventory.API.Controllers
             var response = await _ibHandler.DeductAfterPayment(request);
             return Ok(response);
         }
+
+        [HttpPost("stock-receive")]
+        public async Task<ActionResult<InventoryBalance>> StockReceive([FromBody] StockReceiveRequest request)
+        {
+            if (!_inventoryHandler.IsProductExist(request.ProductId))
+                return BadRequest($"Product with ID {request.ProductId} does not exist.");
+            var response = await _ibHandler.ReceiveStockAsync(request);
+            return Ok(response);
+        }
+
+        [HttpPost("stock-adjustment")]
+        public async Task<ActionResult<InventoryBalance>> AdjustStock([FromBody] StockAdjustmentRequest request)
+        {
+            if (!_inventoryHandler.IsProductExist(request.ProductId))
+                return BadRequest($"Product with ID {request.ProductId} does not exist.");
+            var response = await _ibHandler.AdjustStockAsync(request);
+            return Ok(response);
+        }
     }
 }

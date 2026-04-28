@@ -218,6 +218,58 @@
     ]
   },
   {
+    "ContainingType": "Inventory.API.Controllers.InventoryController",
+    "Method": "AdjustStock",
+    "RelativePath": "api/Inventory/stock-adjustment",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Inventory.Contract.StockAdjustmentRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Inventory.Domain.Models.InventoryBalance",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Inventory.API.Controllers.InventoryController",
+    "Method": "StockReceive",
+    "RelativePath": "api/Inventory/stock-receive",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Inventory.Contract.StockReceiveRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Inventory.Domain.Models.InventoryBalance",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "Inventory.API.Controllers.OrderController",
     "Method": "GetAll",
     "RelativePath": "api/Order",
@@ -543,6 +595,26 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Inventory.API.Controllers.ProductController",
+    "Method": "GetAllforDropdown",
+    "RelativePath": "api/Product/dd",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "Inventory.Contract.GetProductDDResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "Inventory.API.Controllers.ProductController",

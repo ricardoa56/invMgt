@@ -3,22 +3,24 @@ import { AuthProvider } from "./context/AuthContext";
 import LoginPage from "./components/loginPage";
 import ProtectedRoute from "./components/protectedRoute";
 import SideNav from "./components/sideNav";
-import  Header from "./components/header";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Header from "./components/header";
+import "bootstrap/dist/css/bootstrap.min.css";
 import ViewProductsPage from "./components/viewProductsPage";
-import { createTheme, ThemeProvider } from '@mui/material';
+import { createTheme, ThemeProvider } from "@mui/material";
 
-import './App.css'
+import "./App.css";
 import ViewCategoriesPage from "./components/viewCategoriesPage";
 import ViewProductPricePage from "./components/viewProductPricePage";
 import ViewInventoryPage from "./components/viewInventoryPage";
+import ReceiveStockPage from "./components/ReceiveStockPage";
+import StockAdjustmentPage from "./components/stockAdjustmentPage";
 
 const corporateTheme = createTheme({
   typography: {
     fontFamily: '"arial", sans-serif',
     fontSize: 12,
     button: {
-      textTransform: 'none', // Professional look: keeps buttons from being ALL CAPS
+      textTransform: "none", // Professional look: keeps buttons from being ALL CAPS
     },
   },
 });
@@ -49,28 +51,60 @@ function Layout() {
               element={
                 <ProtectedRoute>
                   <ViewProductsPage />
-                </ProtectedRoute>}/>
-                
+                </ProtectedRoute>
+              }
+            />
+
             <Route
               path="category/view"
               element={
                 <ProtectedRoute>
                   <ViewCategoriesPage />
-                </ProtectedRoute>}/>
+                </ProtectedRoute>
+              }
+            />
 
-              <Route
-                path="productprice/view"
-                element={
-                  <ProtectedRoute>
-                    <ViewProductPricePage />
-                  </ProtectedRoute>}/>
-              <Route
-                path="inventory/view"
-                element={
-                  <ProtectedRoute>
-                    <ViewInventoryPage />
-                  </ProtectedRoute>}/>
-            </Routes>
+            <Route
+              path="productprice/view"
+              element={
+                <ProtectedRoute>
+                  <ViewProductPricePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="inventory/view"
+              element={
+                <ProtectedRoute>
+                  <ViewInventoryPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="inventory/receive"
+              element={
+                <ProtectedRoute>
+                  <ReceiveStockPage />
+                </ProtectedRoute>
+              }
+            />
+                        <Route
+              path="inventory/receive"
+              element={
+                <ProtectedRoute>
+                  <ReceiveStockPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="inventory/adjustment"
+              element={
+                <ProtectedRoute>
+                  <StockAdjustmentPage />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
         </main>
       </div>
     </>

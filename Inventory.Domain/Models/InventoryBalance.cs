@@ -13,10 +13,10 @@ namespace Inventory.Domain.Models
         public int ProductId { get; set; }
 
         [Required]
-        public int QuantityOnHand { get; set; }
+        public decimal QuantityOnHand { get; set; }
 
         [Required]
-        public int QuantityCommitted { get; set; }
+        public decimal QuantityCommitted { get; set; }
 
         public DateTime? LastRestockDate { get; set; }
 

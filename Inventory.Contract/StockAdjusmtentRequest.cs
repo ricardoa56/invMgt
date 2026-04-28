@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Inventory.Contract
 {
-    public class StockReceiveRequest : StockTransactionBase
+    public class StockAdjustmentRequest : StockTransactionBase
     {
     }
 }

@@ -53,6 +53,7 @@ const InventoryDialog: React.FC<InventoryDialogProps> = ({ open, onClose, initia
             createdBy: initialData?.createdBy ?? 0,
             quantityOnHand: Number(formData.get('QuantityOnHand')) || 0,
             quantityCommitted: Number(formData.get('QuantityCommitted')) || 0,
+            sellingPrice: initialData?.sellingPrice ?? 0,
         };
 
         await onSave(data);

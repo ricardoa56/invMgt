@@ -10,8 +10,8 @@ namespace Inventory.Contract
     {
         public int Id { get; set; }
         public int ProductId { get; set; }
-        public int QuantityOnHand { get; set; }
-        public int QuantityCommitted { get; set; }
+        public decimal QuantityOnHand { get; set; }
+        public decimal QuantityCommitted { get; set; }
         public string ProductName { get; set; } = null!;
         public decimal SellingPrice { get; set; }
     }

@@ -13,7 +13,6 @@ namespace Inventory.Domain
         public DbSet<UnitOfMeasurement> UnitOfMeasurements { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<StockTransaction> StockTransactions { get; set; }
-        public DbSet<StockAdjustment> StockAdjustments { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<ProductPriceHistory> ProductPriceHistories { get; set; }
@@ -86,13 +85,6 @@ namespace Inventory.Domain
                 .HasOne(poi => poi.Product)
                 .WithMany()
                 .HasForeignKey("ProductId")
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // StockAdjustment - Warehouse (Many-to-One)
-            modelBuilder.Entity<StockAdjustment>()
-                .HasOne(sa => sa.Warehouse)
-                .WithMany()
-                .HasForeignKey("WarehouseId")
                 .OnDelete(DeleteBehavior.Restrict);
 
             // StockTransaction - Product (Many-to-One)

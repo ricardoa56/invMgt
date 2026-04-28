@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Inventory.Contract
 {
-    public class StockReceiveRequest : StockTransactionBase
+    public class GetProductDDResponse
     {
+        public List<ProductDDResponse> Products { get; set; } = new List<ProductDDResponse>();
     }
 }

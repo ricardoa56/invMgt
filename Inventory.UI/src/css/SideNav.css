@@ -85,3 +85,35 @@
     border-radius: 4px;
     background: #60a5fa;
 }
+
+/* Keep the parent header looking like a normal link */
+.nav-parent {
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* The Sub-menu container */
+.side-nav-sub {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: rgba(255, 255, 255, 0.05); /* Slight highlight for the group */
+  border-radius: 8px;
+  margin-top: 4px;
+}
+
+/* The indented links */
+.sub-link {
+  padding-left: 40px !important; /* Force indentation */  
+  opacity: 0.8;                 /* Slightly dimmer than main links */
+}
+
+.sub-link.active {
+  opacity: 1;
+  background-color: #2563eb !important; /* Your blue color */
+}
+
+/* Ensure 'Inventory' doesn't look like an active link when sub-items are clicked 
+   unless you want it to. Right now, it's just a label/toggle. */

@@ -85,62 +85,90 @@ namespace Inventory.Handlers
             return response;
         }
 
-        public async Task<GetProductResponse> GetAllNotInProductPriceAsync()
+        public async Task<GetProductDDResponse> GetAllProductsForDropdownAsync()
         {
-            var productsInPrice = await this.db.ProductPrices.Where(pp => pp.IsActive).Select(pp => pp.ProductId).ToListAsync();
-            var products = await this.db.Products
-                .Include(p => p.Category)
-                .Include(p => p.UnitOfMeasurement)
-                .Where(p => !productsInPrice.Contains(p.ProductId))
+            var products = await this.db.Products.Select(
+                p => new ProductDDResponse()
+                {
+                    Id = p.ProductId,
+                    Name = p.Name,
+                    Quantity = this.db.InventoryBalances.Where(ib => ib.ProductId == p.ProductId).Sum(ib => ib.QuantityOnHand)
+                })
                 .ToListAsync();
 
-            GetProductResponse response = new GetProductResponse()
+            GetProductDDResponse response = new GetProductDDResponse()
             {
-                Products = new List<ProductResponse>()
+                Products = new List<ProductDDResponse>()
             };
             foreach (var product in products)
             {
-                response.Products.Add(new ProductResponse()
+                response.Products.Add(new ProductDDResponse()
                 {
-                    CategoryId = product.Category?.CategoryId ?? 1,
-                    Category = product.Category?.Name ?? string.Empty,
-                    CreatedBy = product.CreatedBy,
-                    Description = product.Description,
-                    Id = product.ProductId,
+                    Id = product.Id,
                     Name = product.Name,
-                    UnitOfMeasurementId = product.UnitOfMeasurement?.UnitOfMeasurementId ?? 0,
-                    ImageName = product.ImageName
+                    Quantity = product.Quantity
                 });
             }
 
             return response;
         }
 
-        public async Task<GetProductResponse> GetAllNotInProductInventoryAsync()
+        public async Task<GetProductDDResponse> GetAllNotInProductPriceAsync()
         {
-            var productsInInventory = await this.db.InventoryBalances.Select(ib => ib.ProductId).ToListAsync();
+            var productsInPrice = await this.db.ProductPrices.Where(pp => pp.IsActive).Select(pp => pp.ProductId).ToListAsync();
             var products = await this.db.Products
-                .Include(p => p.Category)
-                .Include(p => p.UnitOfMeasurement)
-                .Where(p => !productsInInventory.Contains(p.ProductId))
-                .ToListAsync();
+                .Where(p => !productsInPrice.Contains(p.ProductId))
+                .Select(
+                 p => new ProductDDResponse()
+                 {
+                     Id = p.ProductId,
+                     Name = p.Name,
+                     Quantity = this.db.InventoryBalances.Where(ib => ib.ProductId == p.ProductId).Sum(ib => ib.QuantityOnHand)
+                 })
+                 .ToListAsync();
 
-            GetProductResponse response = new GetProductResponse()
+            GetProductDDResponse response = new GetProductDDResponse()
             {
-                Products = new List<ProductResponse>()
+                Products = new List<ProductDDResponse>()
             };
             foreach (var product in products)
             {
-                response.Products.Add(new ProductResponse()
+                response.Products.Add(new ProductDDResponse()
                 {
-                    CategoryId = product.Category?.CategoryId ?? 1,
-                    Category = product.Category?.Name ?? string.Empty,
-                    CreatedBy = product.CreatedBy,
-                    Description = product.Description,
-                    Id = product.ProductId,
+                    Id = product.Id,
                     Name = product.Name,
-                    UnitOfMeasurementId = product.UnitOfMeasurement?.UnitOfMeasurementId ?? 0,
-                    ImageName = product.ImageName
+                    Quantity = product.Quantity
+                });
+            }
+
+            return response;
+        }
+
+        public async Task<GetProductDDResponse> GetAllNotInProductInventoryAsync()
+        {
+            var productsInInventory = await this.db.InventoryBalances.Select(ib => ib.ProductId).ToListAsync();
+            var products = await this.db.Products
+                .Where(p => !productsInInventory.Contains(p.ProductId))
+                .Select(
+                 p => new ProductDDResponse()
+                 {
+                     Id = p.ProductId,
+                     Name = p.Name,
+                     Quantity = this.db.InventoryBalances.Where(ib => ib.ProductId == p.ProductId).Sum(ib => ib.QuantityOnHand)
+                 })
+                 .ToListAsync();
+
+            GetProductDDResponse response = new GetProductDDResponse()
+            {
+                Products = new List<ProductDDResponse>()
+            };
+            foreach (var product in products)
+            {
+                response.Products.Add(new ProductDDResponse()
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Quantity = product.Quantity
                 });
             }
 
