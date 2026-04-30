@@ -81,5 +81,21 @@ namespace Inventory.Handlers
                 })
                 .ToListAsync();
         }
+
+        public async Task<List<CustomerResponse>> GetByCustomerIdAsync(int customerId)
+        {
+            return await this.db.Customers
+                .Where(x => x.Id == customerId)
+                .Select(x => new CustomerResponse
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Email = x.Email,
+                    MessengerId = x.MessengerId,
+                    MobileNo = x.MobileNo,
+                    Address = x.Address,
+                })
+                .ToListAsync();
+        }
     }
 }

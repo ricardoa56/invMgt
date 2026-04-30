@@ -20,9 +20,33 @@ namespace Inventory.Handlers
         }
         public async Task<List<GetOrdersOnlyResponse>> GetOrdersOnlyAsync(GetAllOrderRequest request)
         {
-            var orders = await this.BuildOrdersOnlyQuery(this.db.Orders.Where(o => o.Status == request.Status)).ToListAsync();
+            var orders = await this.BuildOrdersOnlyQuery(this.db.Orders).ToListAsync();
             return orders;
         }
+
+        public async Task<GetOrdersOnlyResponse?> MarkAsPaid(int orderId)
+        {
+            var order = await this.db.Orders.
+                Include(o => o.Items)
+                .FirstOrDefaultAsync(o => o.OrderId == orderId);
+            order.Status = OrderStatus.Paid;
+
+            foreach (var item in order.Items)
+            {
+                var tranBalance = await this.db.InventoryBalances.FirstOrDefaultAsync(iv => iv.ProductId == item.ProductId);
+                tranBalance.QuantityCommitted = 0;
+            }
+            await this.db.SaveChangesAsync();
+            return new GetOrdersOnlyResponse()
+            {
+                OrderId = orderId,
+                CustomerId = order.CustomerId,
+                Status = order.Status,
+                TotalAmount = order.TotalAmount
+            };            
+        }
+
+
         public async Task<GetOrdersResponse> CreateOrderAsync(OrderRequest orderRequest)
         {
             Order order = new Order()
@@ -38,18 +62,30 @@ namespace Inventory.Handlers
 
             foreach (var orderItem in orderRequest.Items)
             {
-                var ccc = await this.db.Products.ToListAsync();
-                Product prod = await this.db.Products.SingleOrDefaultAsync(p => p.ProductId == orderItem.ProductId)?? throw new Exception("Product not found");
+                var prod = await this.db.Products
+                    .AsNoTracking()
+                    .Include(p => p.Price)
+                    .Select(p => new
+                    {
+                        p.Price.SellingPrice,
+                        p.ProductId
+                    })
+                    .SingleOrDefaultAsync(p => p.ProductId == orderItem.ProductId)?? throw new Exception("Product not found");
                 OrderItem item = new OrderItem()
                 {
                     ProductId = orderItem.ProductId,
-                    Quantity = orderItem.Quantity
+                    Quantity = orderItem.Quantity,
+                    UnitPrice = prod.SellingPrice
                 };
+
+                var tranBalance = await this.db.InventoryBalances.FirstOrDefaultAsync(iv => iv.ProductId == item.ProductId);
+                tranBalance.QuantityCommitted += item.Quantity;
+                tranBalance.QuantityOnHand -= item.Quantity;
+
                 order.Items.Add(item);
             }
             this.db.Orders.Add(order);
             await this.db.SaveChangesAsync();
-            //RabbitMqPublisher rabbitMqPublisher = new RabbitMqPublisher();
 
             var createdOrder = await BuildOrderQuery(this.db.Orders.Where(o => o.OrderId == order.OrderId))
                 .FirstOrDefaultAsync()?? throw new Exception("Order not found");
@@ -65,19 +101,26 @@ namespace Inventory.Handlers
 
             if (order == null) throw new Exception("Order not found");
 
-            // 1. Explicitly remove existing items from the Database context
             if (order.Items.Any())
             {
+                //remove items from transaction ballanced uncommited qty
+                foreach(var item in order.Items)
+                {
+                    var tranBalance = await this.db.InventoryBalances.FirstOrDefaultAsync(iv => iv.ProductId == item.ProductId);
+                    tranBalance.QuantityCommitted -= item.Quantity;
+                    tranBalance.QuantityOnHand += item.Quantity;
+                }
                 this.db.OrderItems.RemoveRange(order.Items);
-                // We clear the list so EF doesn't think these objects should be saved again
                 order.Items.Clear();
+                await this.db.SaveChangesAsync();
             }
 
             // 2. Add the new items from the request
             foreach (var item in request.Items)
             {
                 var prod = await this.db.Products
-                    .AsNoTracking() // Use NoTracking to avoid cache conflicts
+                    .AsNoTracking()
+                    .Include(p => p.Price)
                     .SingleOrDefaultAsync(p => p.ProductId == item.ProductId);
 
                 if (prod != null)
@@ -86,8 +129,12 @@ namespace Inventory.Handlers
                     {
                         OrderId = order.OrderId, // Explicitly link it
                         ProductId = item.ProductId,
-                        Quantity = item.Quantity
+                        Quantity = item.Quantity,
+                        UnitPrice = prod.Price.SellingPrice
                     });
+                    var tranBalance = await this.db.InventoryBalances.FirstOrDefaultAsync(iv => iv.ProductId == item.ProductId);
+                    tranBalance.QuantityCommitted += item.Quantity;
+                    tranBalance.QuantityOnHand -= item.Quantity;
                 }
             }
 
@@ -123,9 +170,9 @@ namespace Inventory.Handlers
                         OrderItemId = i.OrderItemId,
                         ProductId = i.ProductId,
                         Quantity = i.Quantity,
-                        UnitPrice = i.UnitPrice,
+                        SellingPrice = i.UnitPrice,
                         ProductName = i.Product.Name,
-                        ImageName = i.Product.ImageName
+                        ImageName = i.Product.ImageName,
                     }).ToList()
                 });
         }
@@ -148,7 +195,7 @@ namespace Inventory.Handlers
         public async Task<GetOrdersResponse> GetOrderAsync(int orderId)
         {
             var orderResponse = await BuildOrderQuery(
-                    this.db.Orders.Where(o => o.OrderId == orderId && o.Status != OrderStatus.Paid)
+                    this.db.Orders.Where(o => o.OrderId == orderId)
                 )
                 .FirstOrDefaultAsync();
 

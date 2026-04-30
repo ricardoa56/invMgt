@@ -37,6 +37,7 @@ namespace Inventory.API.Controllers
                     Id = ib.Id,
                     ProductId = ib.ProductId,
                     QuantityOnHand = ib.QuantityOnHand,
+                    QuantityCommitted = ib.QuantityCommitted,
                     ProductName = ib.Product.Name,
                     SellingPrice = ib.Product.Price != null ? ib.Product.Price.SellingPrice : 0,
                 }).ToListAsync();

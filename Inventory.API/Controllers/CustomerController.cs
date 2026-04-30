@@ -30,6 +30,14 @@ namespace Inventory.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByCustomerId(int id)
+        {
+            var result = await _customerHandler.GetByCustomerIdAsync(id);
+            return Ok(result);
+        }
+            
+
         [HttpPut("{customerId}")]
         public async Task<IActionResult> Update(int customerId, UpdateCustomerRequest request)
         {

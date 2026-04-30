@@ -8,7 +8,7 @@
         public string? ProductName { get; set; }
         public string? ImageName { get; set; }
         public int Quantity { get; set; }
-        public decimal UnitPrice { get; set; }
+        public decimal SellingPrice { get; set; }
         public decimal TotalPrice { get; set; }
     }
 }

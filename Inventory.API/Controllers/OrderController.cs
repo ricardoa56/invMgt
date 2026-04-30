@@ -1,9 +1,12 @@
-﻿using Inventory.Contract;
+﻿using Azure.Core;
+using Inventory.Contract;
 using Inventory.Domain;
+using Inventory.Domain.Enums;
 using Inventory.Domain.Models;
 using Inventory.Handlers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Inventory.API.Controllers
 {
@@ -31,8 +34,9 @@ namespace Inventory.API.Controllers
         public async Task<ActionResult<GetOrdersResponse>> CreateOrder([FromBody] OrderRequest request)
         {
             var order = new GetOrdersResponse();
-                
-            if(request.OrderId == 0)
+            if(request.Status != Domain.Enums.OrderStatus.Submitted) return BadRequest("Cannot update an order that has already been paid.");
+
+            if (request.OrderId == 0)
                 order = await _orderHandler.CreateOrderAsync(request);
             else
                 order = await _orderHandler.UpdateOrderAsync(request);
@@ -68,5 +72,12 @@ namespace Inventory.API.Controllers
             return Ok(orders);
         }
 
+        [HttpPut("paid/{orderId}")]
+        public async Task<IActionResult> MarkAsPaid(int orderId)
+        {
+            var orders = await _orderHandler.MarkAsPaid(orderId);
+
+            return Ok(orders);
+        }
     }
 }

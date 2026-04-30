@@ -3,16 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\Ric\\source\\repos\\InvMgt\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A4793CC2-808F-ECDF-E5E8-E13E188CD81A}|Inventory.Handlers\\Inventory.Handlers.csproj|c:\\users\\ric\\source\\repos\\invmgt\\inventory.handlers\\orderhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A4793CC2-808F-ECDF-E5E8-E13E188CD81A}|Inventory.Handlers\\Inventory.Handlers.csproj|solutionrelative:inventory.handlers\\orderhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{DFFA61B8-F2D3-D067-3013-189357AB4D95}|Inventory.API\\Inventory.API.csproj|c:\\users\\ric\\source\\repos\\invmgt\\inventory.api\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{DFFA61B8-F2D3-D067-3013-189357AB4D95}|Inventory.API\\Inventory.API.csproj|solutionrelative:inventory.api\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{17BF41E8-6B41-1240-B385-F6310323282D}|Inventory.Contract\\Inventory.Contract.csproj|c:\\users\\ric\\source\\repos\\invmgt\\inventory.contract\\getordersresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{17BF41E8-6B41-1240-B385-F6310323282D}|Inventory.Contract\\Inventory.Contract.csproj|solutionrelative:inventory.contract\\getordersresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A4793CC2-808F-ECDF-E5E8-E13E188CD81A}|Inventory.Handlers\\Inventory.Handlers.csproj|c:\\users\\ric\\source\\repos\\invmgt\\inventory.handlers\\orderhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A4793CC2-808F-ECDF-E5E8-E13E188CD81A}|Inventory.Handlers\\Inventory.Handlers.csproj|solutionrelative:inventory.handlers\\orderhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DFFA61B8-F2D3-D067-3013-189357AB4D95}|Inventory.API\\Inventory.API.csproj|c:\\users\\ric\\source\\repos\\invmgt\\inventory.api\\controllers\\invetorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DFFA61B8-F2D3-D067-3013-189357AB4D95}|Inventory.API\\Inventory.API.csproj|solutionrelative:inventory.api\\controllers\\invetorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{17BF41E8-6B41-1240-B385-F6310323282D}|Inventory.Contract\\Inventory.Contract.csproj|c:\\users\\ric\\source\\repos\\invmgt\\inventory.contract\\orderitemresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{17BF41E8-6B41-1240-B385-F6310323282D}|Inventory.Contract\\Inventory.Contract.csproj|solutionrelative:inventory.contract\\orderitemresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DFFA61B8-F2D3-D067-3013-189357AB4D95}|Inventory.API\\Inventory.API.csproj|c:\\users\\ric\\source\\repos\\invmgt\\inventory.api\\controllers\\customercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{DFFA61B8-F2D3-D067-3013-189357AB4D95}|Inventory.API\\Inventory.API.csproj|solutionrelative:inventory.api\\controllers\\customercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{17BF41E8-6B41-1240-B385-F6310323282D}|Inventory.Contract\\Inventory.Contract.csproj|c:\\users\\ric\\source\\repos\\invmgt\\inventory.contract\\customerresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -23,24 +31,12 @@
       "RelativeMoniker": "D:0:0:{DFFA61B8-F2D3-D067-3013-189357AB4D95}|Inventory.API\\Inventory.API.csproj|solutionrelative:inventory.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A4793CC2-808F-ECDF-E5E8-E13E188CD81A}|Inventory.Handlers\\Inventory.Handlers.csproj|c:\\users\\ric\\source\\repos\\invmgt\\inventory.handlers\\customerhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A4793CC2-808F-ECDF-E5E8-E13E188CD81A}|Inventory.Handlers\\Inventory.Handlers.csproj|solutionrelative:inventory.handlers\\customerhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{17BF41E8-6B41-1240-B385-F6310323282D}|Inventory.Contract\\Inventory.Contract.csproj|c:\\users\\ric\\source\\repos\\invmgt\\inventory.contract\\updatecustomerrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{17BF41E8-6B41-1240-B385-F6310323282D}|Inventory.Contract\\Inventory.Contract.csproj|solutionrelative:inventory.contract\\updatecustomerrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{17BF41E8-6B41-1240-B385-F6310323282D}|Inventory.Contract\\Inventory.Contract.csproj|c:\\users\\ric\\source\\repos\\invmgt\\inventory.contract\\getproductddresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{17BF41E8-6B41-1240-B385-F6310323282D}|Inventory.Contract\\Inventory.Contract.csproj|solutionrelative:inventory.contract\\getproductddresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DFFA61B8-F2D3-D067-3013-189357AB4D95}|Inventory.API\\Inventory.API.csproj|c:\\users\\ric\\source\\repos\\invmgt\\inventory.api\\controllers\\customercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DFFA61B8-F2D3-D067-3013-189357AB4D95}|Inventory.API\\Inventory.API.csproj|solutionrelative:inventory.api\\controllers\\customercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DFFA61B8-F2D3-D067-3013-189357AB4D95}|Inventory.API\\Inventory.API.csproj|c:\\users\\ric\\source\\repos\\invmgt\\inventory.api\\controllers\\invetorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{DFFA61B8-F2D3-D067-3013-189357AB4D95}|Inventory.API\\Inventory.API.csproj|solutionrelative:inventory.api\\controllers\\invetorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A4793CC2-808F-ECDF-E5E8-E13E188CD81A}|Inventory.Handlers\\Inventory.Handlers.csproj|c:\\users\\ric\\source\\repos\\invmgt\\inventory.handlers\\inventoryhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -82,7 +78,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.API\\Program.cs",
               "RelativeDocumentMoniker": "Inventory.API\\Program.cs",
@@ -95,13 +91,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 4,
               "Title": "CustomerController.cs",
               "DocumentMoniker": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.API\\Controllers\\CustomerController.cs",
               "RelativeDocumentMoniker": "Inventory.API\\Controllers\\CustomerController.cs",
               "ToolTip": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.API\\Controllers\\CustomerController.cs",
               "RelativeToolTip": "Inventory.API\\Controllers\\CustomerController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAABAAAAAAAAAAA==",
+              "ViewState": "AgIAABAAAAAAAAAAAAAgwBUAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-29T04:37:13.181Z",
               "EditorCaption": ""
@@ -109,19 +105,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "CustomerHandler.cs",
-              "DocumentMoniker": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.Handlers\\CustomerHandler.cs",
-              "RelativeDocumentMoniker": "Inventory.Handlers\\CustomerHandler.cs",
-              "ToolTip": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.Handlers\\CustomerHandler.cs",
-              "RelativeToolTip": "Inventory.Handlers\\CustomerHandler.cs",
-              "ViewState": "AgIAAEIAAAAAAAAAAAAIwEkAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-29T04:22:50.501Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
               "Title": "CustomerResponse.cs",
               "DocumentMoniker": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.Contract\\CustomerResponse.cs",
               "RelativeDocumentMoniker": "Inventory.Contract\\CustomerResponse.cs",
@@ -134,33 +117,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "OrderHandler.cs",
               "DocumentMoniker": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.Handlers\\OrderHandler.cs",
               "RelativeDocumentMoniker": "Inventory.Handlers\\OrderHandler.cs",
               "ToolTip": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.Handlers\\OrderHandler.cs",
               "RelativeToolTip": "Inventory.Handlers\\OrderHandler.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAAABcAAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAAgAAAAAAAAAAAA9wCQAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-28T12:26:41.907Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "OrderController.cs",
               "DocumentMoniker": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.API\\Controllers\\OrderController.cs",
               "RelativeDocumentMoniker": "Inventory.API\\Controllers\\OrderController.cs",
               "ToolTip": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.API\\Controllers\\OrderController.cs",
               "RelativeToolTip": "Inventory.API\\Controllers\\OrderController.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAYwBgAAAA3AAAAAAAAAA==",
+              "ViewState": "AgIAAD0AAAAAAAAAAAAgwE0AAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-28T12:17:37.069Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "UpdateCustomerRequest.cs",
               "DocumentMoniker": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.Contract\\UpdateCustomerRequest.cs",
               "RelativeDocumentMoniker": "Inventory.Contract\\UpdateCustomerRequest.cs",
@@ -173,20 +156,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "GetOrdersResponse.cs",
-              "DocumentMoniker": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.Contract\\GetOrdersResponse.cs",
-              "RelativeDocumentMoniker": "Inventory.Contract\\GetOrdersResponse.cs",
-              "ToolTip": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.Contract\\GetOrdersResponse.cs",
-              "RelativeToolTip": "Inventory.Contract\\GetOrdersResponse.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-30T03:49:52.233Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "GetProductDDResponse.cs",
               "DocumentMoniker": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.Contract\\GetProductDDResponse.cs",
               "RelativeDocumentMoniker": "Inventory.Contract\\GetProductDDResponse.cs",
@@ -199,7 +169,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 2,
+              "Title": "InvetoryController.cs",
+              "DocumentMoniker": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.API\\Controllers\\InvetoryController.cs",
+              "RelativeDocumentMoniker": "Inventory.API\\Controllers\\InvetoryController.cs",
+              "ToolTip": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.API\\Controllers\\InvetoryController.cs",
+              "RelativeToolTip": "Inventory.API\\Controllers\\InvetoryController.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAgwCcAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-28T05:44:42.754Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "OrderItemResponse.cs",
+              "DocumentMoniker": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.Contract\\OrderItemResponse.cs",
+              "RelativeDocumentMoniker": "Inventory.Contract\\OrderItemResponse.cs",
+              "ToolTip": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.Contract\\OrderItemResponse.cs",
+              "RelativeToolTip": "Inventory.Contract\\OrderItemResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAoAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-30T05:13:27.245Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "InventoryHandler.cs",
               "DocumentMoniker": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.Handlers\\InventoryHandler.cs",
               "RelativeDocumentMoniker": "Inventory.Handlers\\InventoryHandler.cs",
@@ -211,19 +207,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "InvetoryController.cs",
-              "DocumentMoniker": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.API\\Controllers\\InvetoryController.cs",
-              "RelativeDocumentMoniker": "Inventory.API\\Controllers\\InvetoryController.cs",
-              "ToolTip": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.API\\Controllers\\InvetoryController.cs",
-              "RelativeToolTip": "Inventory.API\\Controllers\\InvetoryController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAABgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-28T05:44:42.754Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 11,
               "Title": "GetAllOrderRequest.cs",
               "DocumentMoniker": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.Contract\\GetAllOrderRequest.cs",
               "RelativeDocumentMoniker": "Inventory.Contract\\GetAllOrderRequest.cs",
@@ -235,7 +219,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 10,
               "Title": "ProductHandler.cs",
               "DocumentMoniker": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.Handlers\\ProductHandler.cs",
               "RelativeDocumentMoniker": "Inventory.Handlers\\ProductHandler.cs",
@@ -247,7 +231,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 13,
               "Title": "GetProductResponse.cs",
               "DocumentMoniker": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.Contract\\GetProductResponse.cs",
               "RelativeDocumentMoniker": "Inventory.Contract\\GetProductResponse.cs",
@@ -259,7 +243,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 14,
               "Title": "ProductResponse.cs",
               "DocumentMoniker": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.Contract\\ProductResponse.cs",
               "RelativeDocumentMoniker": "Inventory.Contract\\ProductResponse.cs",
@@ -271,7 +255,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 12,
               "Title": "ProductController.cs",
               "DocumentMoniker": "C:\\Users\\Ric\\source\\repos\\InvMgt\\Inventory.API\\Controllers\\ProductController.cs",
               "RelativeDocumentMoniker": "Inventory.API\\Controllers\\ProductController.cs",

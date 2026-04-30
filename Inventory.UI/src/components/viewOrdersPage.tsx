@@ -1,6 +1,10 @@
 import React, { useMemo, useState, useEffect } from "react";
-import { Box, Button, Chip } from "@mui/material";
-import { Visibility as ViewIcon, Add as AddIcon } from "@mui/icons-material";
+import { Box, Button, Chip, IconButton } from "@mui/material";
+import {
+  Visibility as ViewIcon,
+  Add as AddIcon,
+  Payments as PaidIcon,
+} from "@mui/icons-material";
 import axiosClient from "./util/axiosClient";
 import {
   MaterialReactTable,
@@ -9,6 +13,9 @@ import {
 } from "material-react-table";
 import type { OrdersOnly } from "./interface/OrdersOnly";
 import OrdersDialog from "./popOrders";
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const ViewOrdersPage: React.FC = () => {
   const [orders, setOrders] = useState<OrdersOnly[]>([]);
@@ -18,9 +25,8 @@ const ViewOrdersPage: React.FC = () => {
 
   const handleSave = async (data: OrdersOnly) => {
     const isUpdate = selectedOrderId && selectedOrderId > 0;
-
-    console.log("Saving order data:", data, "Is update:", isUpdate);
     const payload = {
+      orderId: 0,
       customerId: data.customerId,
       status: data.status,
       remarks: data.remarks,
@@ -35,11 +41,8 @@ const ViewOrdersPage: React.FC = () => {
     };
 
     try {
-      if (isUpdate) {
-        await axiosClient.put(`order/${selectedOrderId}`, payload);
-      } else {
-        await axiosClient.post("order", payload);
-      }
+      if (isUpdate) payload.orderId = selectedOrderId;
+      await axiosClient.post("order", payload);
 
       await fetchOrders();
       setOrdersDialogOpen(false);
@@ -47,6 +50,17 @@ const ViewOrdersPage: React.FC = () => {
       console.error("Failed to save order:", error);
     }
   };
+
+  const handleMarkAsPaid = async (orderId: number) => {
+  try {
+    // 1. Backend Call
+    await axiosClient.put(`order/paid/${orderId}`);
+    await fetchOrders();
+    
+  } catch (error) {
+    console.error("Payment failed", error);
+  }
+};
 
   const fetchOrders = async () => {
     try {
@@ -93,12 +107,7 @@ const ViewOrdersPage: React.FC = () => {
           if (status === 2) label = "Cancelled";
           if (status === 3) label = "Completed";
           return (
-            <Chip
-              label={label}
-              color={color}
-              size="small"
-              variant="outlined"
-            />
+            <Chip label={label} color={color} size="small" variant="outlined" />
           );
         },
       },
@@ -147,19 +156,57 @@ const ViewOrdersPage: React.FC = () => {
         Add
       </Button>
     ),
-    renderRowActions: ({ row }) => (
-      <Button
-        startIcon={<ViewIcon />}
-        size="small"
-        onClick={() => {
-          setSelectedOrderId(row.original.orderId);
-          setOrdersDialogOpen(true);
-          console.log("View items for order:", row.original.orderId);
-        }}
-      >
-        View Items
-      </Button>
-    ),
+    renderRowActions: ({ row }) => {
+      const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+      const open = Boolean(anchorEl);
+
+      const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+      };
+
+      const handleCloseMenu = () => {
+        setAnchorEl(null);
+      };
+
+      return (
+        <Box>
+          {/* Primary Action Button */}
+          <Button
+            startIcon={<ViewIcon />}
+            size="small"
+            onClick={() => {
+              setSelectedOrderId(row.original.orderId);
+              setOrdersDialogOpen(true);
+            }}
+            sx={{ textTransform: "none" }}
+          >
+            View
+          </Button>
+
+          {/* The "More" Trigger (Dropdown) */}
+          <IconButton size="small" onClick={handleOpenMenu}>
+            <MoreVertIcon fontSize="small" />
+          </IconButton>
+
+          {/* The Dropdown Menu */}
+          <Menu anchorEl={anchorEl} open={open} onClose={handleCloseMenu}>
+            <MenuItem
+              onClick={() => {
+                handleMarkAsPaid(row.original.orderId);
+                handleCloseMenu();
+              }}
+              disabled={row.original.status === 1} // Logic check
+              sx={{ color: "success.main", gap: 1 }}
+            >
+              <PaidIcon fontSize="small" />
+              Mark as Paid
+            </MenuItem>
+
+            {/* You can easily add "Delete" or "Print" here later without crowding the row */}
+          </Menu>
+        </Box>
+      );
+    },
     initialState: {
       density: "compact",
       pagination: { pageSize: 15, pageIndex: 0 },
