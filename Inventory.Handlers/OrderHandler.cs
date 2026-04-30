@@ -18,6 +18,11 @@ namespace Inventory.Handlers
             var orders = await this.BuildOrderQuery(this.db.Orders).ToListAsync();
             return orders;
         }
+        public async Task<List<GetOrdersOnlyResponse>> GetOrdersOnlyAsync(GetAllOrderRequest request)
+        {
+            var orders = await this.BuildOrdersOnlyQuery(this.db.Orders.Where(o => o.Status == request.Status)).ToListAsync();
+            return orders;
+        }
         public async Task<GetOrdersResponse> CreateOrderAsync(OrderRequest orderRequest)
         {
             Order order = new Order()
@@ -26,7 +31,9 @@ namespace Inventory.Handlers
                 OrderDate = DateTime.UtcNow,
                 Status = OrderStatus.Submitted,
                 Remarks = orderRequest.Remarks,
-                CreatedDate = DateTime.UtcNow
+                CreatedDate = DateTime.UtcNow,
+                TotalAmount = orderRequest.TotalAmount,
+                CreatedBy = orderRequest.CreatedBy
             };
 
             foreach (var orderItem in orderRequest.Items)
@@ -105,12 +112,12 @@ namespace Inventory.Handlers
                 .Select(o => new GetOrdersResponse
                 {
                     OrderId = o.OrderId,
-                    OrderNumber = o.OrderNumber,
                     CustomerId = o.CustomerId,
+                    CustomerName = o.Customer.Name,
                     OrderDate = o.OrderDate,
                     Status = o.Status,
                     Remarks = o.Remarks,
-                    TotalAmount = o.Items.Sum(i => i.Quantity * i.UnitPrice),
+                    TotalAmount = o.TotalAmount,
                     Items = o.Items.Select(i => new OrderItemResponse
                     {
                         OrderItemId = i.OrderItemId,
@@ -120,6 +127,21 @@ namespace Inventory.Handlers
                         ProductName = i.Product.Name,
                         ImageName = i.Product.ImageName
                     }).ToList()
+                });
+        }
+
+        private IQueryable<GetOrdersOnlyResponse> BuildOrdersOnlyQuery(IQueryable<Order> query)
+        {
+            return query
+                .Select(o => new GetOrdersOnlyResponse
+                {
+                    OrderId = o.OrderId,
+                    CustomerId = o.CustomerId,
+                    OrderDate = o.OrderDate,
+                    CustomerName = o.Customer.Name,
+                    Status = o.Status,
+                    Remarks = o.Remarks,
+                    TotalAmount = o.TotalAmount
                 });
         }
 

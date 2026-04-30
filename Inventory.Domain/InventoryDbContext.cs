@@ -21,6 +21,7 @@ namespace Inventory.Domain
         public DbSet<Warehouse> Warehouses { get; set; }
         public DbSet<InventoryBalance> InventoryBalances { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
         public DbSet<Payment> Payments { get; set; }
 
@@ -74,10 +75,15 @@ namespace Inventory.Domain
                 entity.Property(o => o.CreatedDate)
                     .HasDefaultValueSql("SYSDATETIME()");
 
-                entity.HasMany(o => o.Items)       // Order → OrderItems
-                      .WithOne(oi => oi.Order)     // OrderItem → Order
+                entity.HasMany(o => o.Items)
+                      .WithOne(oi => oi.Order)
                       .HasForeignKey(oi => oi.OrderId)
                       .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(o => o.Customer)
+                      .WithMany()
+                      .HasForeignKey(o => o.CustomerId)
+                      .OnDelete(DeleteBehavior.Restrict);
             });
 
             // PurchaseOrderItem - Product (Many-to-One)
@@ -130,6 +136,19 @@ namespace Inventory.Domain
                 entity.Property(e => e.IsActive).HasDefaultValue(true);
             });
 
+            modelBuilder.Entity<Customer>(entity =>
+            {
+                entity.ToTable("Customers");
+
+                entity.HasKey(e => e.Id);
+
+                entity.HasIndex(e => e.Email)
+                    .IsUnique()
+                    .HasFilter("[Email] IS NOT NULL");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasDefaultValueSql("GETDATE()");
+            });
 
             base.OnModelCreating(modelBuilder);
         }

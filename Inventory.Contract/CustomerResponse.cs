@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace Inventory.Contract
 {
-    public class ProductDDResponse
+    public class CustomerResponse
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
-        public decimal Quantity { get; set; }
-        public decimal SellingPrice { get; set; }
+        public string? Email { get; set; }
+        public string? MessengerId { get; set; }
+        public string? MobileNo { get; set; }
+        public string? Address { get; set; }
     }
 }

@@ -69,7 +69,7 @@ const viewInventoryPage: React.FC = () => {
         accessorFn: (row) => row.quantityOnHand * (row.sellingPrice || 0),
         // 3. Format the output as currency
         Cell: ({ cell }) => (
-          <Box sx={{ fontWeight: "bold", color: "primary.main" }}>
+          <Box sx={{ fontWeight: "bold" }}>
             {cell.getValue<number>().toLocaleString("en-US", {
               minimumFractionDigits: 0,
               maximumFractionDigits: 0,
@@ -88,9 +88,12 @@ const viewInventoryPage: React.FC = () => {
             return sum + q * p;
           }, 0);
           return (
-            <Box sx={{ color: "error.main", fontWeight: "bold" }}>
+            <Box sx={{ fontWeight: "bold", fontSize: "1.1em" }}>
               Total:{" "}
-              {totalSum.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+              {totalSum.toLocaleString("en-US", {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              })}
             </Box>
           );
         },
@@ -148,8 +151,8 @@ const viewInventoryPage: React.FC = () => {
           console.log("Add new inventory item action triggered");
         }}
         sx={{
-          backgroundColor: "#2e7d32", // Professional green to match 'Active' status
-          "&:hover": { backgroundColor: "#1b5e20" },
+          bgcolor: "#2e7d32",
+          "&:hover": { bgcolor: "#1b5e20" },
           textTransform: "none",
           fontWeight: "bold",
         }}

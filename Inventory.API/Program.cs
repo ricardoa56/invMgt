@@ -31,6 +31,7 @@ builder.Services.AddScoped<OrderHandler>();
 builder.Services.AddScoped<PaymentHandler>();
 builder.Services.AddScoped<ProductPriceHandler>();
 builder.Services.AddScoped<InventoryBalanceHandler>();
+builder.Services.AddScoped<CustomerHandler>();
 
 // JWT setup
 var jwtKey = builder.Configuration["Jwt:Key"] ?? "your_secret_key_here";

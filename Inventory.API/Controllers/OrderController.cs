@@ -60,5 +60,13 @@ namespace Inventory.API.Controllers
             return Ok(orders);
         }
 
+        [HttpGet("ordersonly")]
+        public async Task<ActionResult<List<GetOrdersResponse>>> GetOrdersOnly([FromQuery] GetAllOrderRequest request)
+        {
+            var orders = await _orderHandler.GetOrdersOnlyAsync(request);
+
+            return Ok(orders);
+        }
+
     }
 }

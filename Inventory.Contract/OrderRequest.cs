@@ -7,8 +7,9 @@ namespace Inventory.Contract
         public int CustomerId { get; set; }
         public OrderStatus Status { get; set; }
         public long OrderId { get; set; }
-
+        public decimal TotalAmount { get; set; }
         public string? Remarks { get; set; }
+        public int CreatedBy { get; set; }
 
         public List<OrderItemRequest> Items { get; set; } = new();
     }

@@ -87,12 +87,15 @@ namespace Inventory.Handlers
 
         public async Task<GetProductDDResponse> GetAllProductsForDropdownAsync()
         {
-            var products = await this.db.Products.Select(
+            var products = await this.db.Products
+                .Include(p => p.Price)
+                .Select(
                 p => new ProductDDResponse()
                 {
                     Id = p.ProductId,
                     Name = p.Name,
-                    Quantity = this.db.InventoryBalances.Where(ib => ib.ProductId == p.ProductId).Sum(ib => ib.QuantityOnHand)
+                    Quantity = this.db.InventoryBalances.Where(ib => ib.ProductId == p.ProductId).Sum(ib => ib.QuantityOnHand),
+                    SellingPrice = p.Price.SellingPrice
                 })
                 .ToListAsync();
 
@@ -106,7 +109,8 @@ namespace Inventory.Handlers
                 {
                     Id = product.Id,
                     Name = product.Name,
-                    Quantity = product.Quantity
+                    Quantity = product.Quantity,
+                    SellingPrice = product.SellingPrice
                 });
             }
 

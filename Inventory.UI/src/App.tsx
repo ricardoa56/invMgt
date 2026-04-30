@@ -12,8 +12,10 @@ import "./App.css";
 import ViewCategoriesPage from "./components/viewCategoriesPage";
 import ViewProductPricePage from "./components/viewProductPricePage";
 import ViewInventoryPage from "./components/viewInventoryPage";
-import ReceiveStockPage from "./components/ReceiveStockPage";
+import ReceiveStockPage from "./components/receiveStockPage";
 import StockAdjustmentPage from "./components/stockAdjustmentPage";
+import ViewOrdersPage from "./components/viewOrdersPage";
+import ViewCustomersPage from "./components/viewCustomersPage";
 
 const corporateTheme = createTheme({
   typography: {
@@ -29,8 +31,13 @@ function getPageTitle(pathname: string) {
   if (pathname === "/category/view") return "Categories";
   if (pathname === "/category/add") return "Add Category";
   if (pathname === "/productprice/view") return "Product Prices";
-  if (pathname === "/login") return "Inventory Application";
-  return "Inventory Application";
+  if (pathname === "/inventory/view") return "Inventory";
+  if (pathname === "/inventory/receive") return "Receive Stock";
+  if (pathname === "/inventory/adjustment") return "Stock Adjustment";
+  if (pathname === "/orders/view") return "Orders";
+  if (pathname === "/customers/view") return "Customers";
+  if (pathname === "/login") return "Inventory Management System - Login";
+  return "Inventory Management System";
 }
 
 function Layout() {
@@ -88,7 +95,7 @@ function Layout() {
                 </ProtectedRoute>
               }
             />
-                        <Route
+            <Route
               path="inventory/receive"
               element={
                 <ProtectedRoute>
@@ -101,6 +108,22 @@ function Layout() {
               element={
                 <ProtectedRoute>
                   <StockAdjustmentPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="orders/view"
+              element={
+                <ProtectedRoute>
+                  <ViewOrdersPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="customers/view"
+              element={
+                <ProtectedRoute>
+                  <ViewCustomersPage />
                 </ProtectedRoute>
               }
             />
