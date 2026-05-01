@@ -15,3 +15,4 @@ C:\Users\Ric\source\repos\InvMgt\Inventory.Handlers\obj\Release\net8.0\Inventory
 C:\Users\Ric\source\repos\InvMgt\Inventory.Handlers\obj\Release\net8.0\refint\Inventory.Handlers.dll
 C:\Users\Ric\source\repos\InvMgt\Inventory.Handlers\obj\Release\net8.0\Inventory.Handlers.pdb
 C:\Users\Ric\source\repos\InvMgt\Inventory.Handlers\obj\Release\net8.0\ref\Inventory.Handlers.dll
+C:\Users\Ric\source\repos\InvMgt\Inventory.Handlers\obj\Release\net8.0\Inventory.Handlers.sourcelink.json

@@ -196,3 +196,4 @@ C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\win-x64\refint
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\win-x64\Inventory.API.pdb
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\win-x64\Inventory.API.genruntimeconfig.cache
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\win-x64\ref\Inventory.API.dll
+C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\win-x64\Inventory.API.sourcelink.json

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import LoginPage from "./components/loginPage";
 import ProtectedRoute from "./components/protectedRoute";
@@ -7,7 +7,6 @@ import Header from "./components/header";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ViewProductsPage from "./components/viewProductsPage";
 import { createTheme, ThemeProvider } from "@mui/material";
-
 import "./App.css";
 import ViewCategoriesPage from "./components/viewCategoriesPage";
 import ViewProductPricePage from "./components/viewProductPricePage";
@@ -18,6 +17,7 @@ import ViewOrdersPage from "./components/viewOrdersPage";
 import ViewCustomersPage from "./components/viewCustomersPage";
 import SalesReportPage from "./components/viewSalesReportPage";
 import ViewRefundsPage from "./components/viewRefundPage";
+import { useAuth } from "./context/AuthContext";
 
 const corporateTheme = createTheme({
   typography: {
@@ -45,8 +45,29 @@ function getPageTitle(pathname: string) {
 }
 
 function Layout() {
+const { isAuthenticated, loading } = useAuth();
   const location = useLocation();
   const title = getPageTitle(location.pathname);
+
+  // 1. Wait for Auth to finish. This ensures we don't show the wrong page.
+  if (loading) return null;
+
+  // 2. UNAUTHENTICATED VIEW: No Sidebar, No Header.
+  if (!isAuthenticated) {
+    return (
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        {/* If they try to go anywhere else while logged out, send to login */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    );
+  }
+
+  // 3. AUTHENTICATED VIEW: Full Dashboard.
+  // If they are logged in and try to hit /login, bounce them to inventory.
+  if (location.pathname === "/login") {
+    return <Navigate to="/inventory/view" replace />;
+  }
 
   return (
     <>
@@ -88,14 +109,6 @@ function Layout() {
               element={
                 <ProtectedRoute>
                   <ViewInventoryPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="inventory/receive"
-              element={
-                <ProtectedRoute>
-                  <ReceiveStockPage />
                 </ProtectedRoute>
               }
             />

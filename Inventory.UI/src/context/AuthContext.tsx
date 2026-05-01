@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode,
+} from "react";
 import { jwtDecode, type JwtPayload } from "jwt-decode";
 
 // 1. Define the shape of your User (add whatever is in your JWT)
@@ -12,6 +18,8 @@ interface MyUser extends JwtPayload {
 interface AuthContextType {
   token: string | null;
   user: MyUser | null;
+  isAuthenticated: boolean; // Add this
+  loading: boolean; // Add this to handle the initial check
   login: (token: string) => void;
   logout: () => void;
 }
@@ -27,19 +35,22 @@ export const useAuth = () => {
 
 // 4. Add types to the props ({ children }: { children: ReactNode })
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [token, setToken] = useState<string | null>(() => localStorage.getItem("token"));
+  const [token, setToken] = useState<string | null>(() =>
+    localStorage.getItem("token"),
+  );
   const [user, setUser] = useState<MyUser | null>(null);
+  const [loading, setLoading] = useState(true); // Initialize loading as true
 
   useEffect(() => {
     if (token) {
       try {
-        const decoded = jwtDecode<MyUser>(token); // Tell jwt-decode what to expect
+        const decoded = jwtDecode<MyUser>(token);
         const now = Date.now() / 1000;
 
         if (decoded.exp && decoded.exp < now) {
           logout();
         } else {
-          setUser(decoded); // Put the actual decoded data in state
+          setUser(decoded);
         }
       } catch {
         logout();
@@ -47,6 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } else {
       setUser(null);
     }
+    setLoading(false); // Set to false once the check is done
   }, [token]);
 
   const login = (newToken: string) => {
@@ -61,7 +73,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        token,
+        user,
+        isAuthenticated: !!token, // Simplified check: if there is a token, they are authenticated
+        loading,
+        login,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

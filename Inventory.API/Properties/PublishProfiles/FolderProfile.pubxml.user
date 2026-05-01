@@ -3,7 +3,7 @@
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\Ric\source\repos\InvMgt\Inventory.API\bin\Release\net8.0\publish\</_PublishTargetUrl>
-    <History>True|2026-04-18T05:34:33.6717346Z||;False|2026-04-18T13:33:22.5236962+08:00||;True|2026-04-18T12:46:55.7482590+08:00||;True|2026-04-18T12:41:16.9160762+08:00||;</History>
+    <History>True|2026-05-01T10:22:53.7720324Z||;True|2026-05-01T18:21:31.9219365+08:00||;True|2026-05-01T18:06:59.3461614+08:00||;True|2026-04-18T13:34:33.6717346+08:00||;False|2026-04-18T13:33:22.5236962+08:00||;True|2026-04-18T12:46:55.7482590+08:00||;True|2026-04-18T12:41:16.9160762+08:00||;</History>
     <LastFailureDetails />
     <TimeStampOfAssociatedLegacyPublishXmlFile />
   </PropertyGroup>

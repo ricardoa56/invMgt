@@ -13,3 +13,4 @@ C:\Users\Ric\source\repos\InvMgt\Inventory.Contract\obj\Release\net8.0\Inventory
 C:\Users\Ric\source\repos\InvMgt\Inventory.Contract\obj\Release\net8.0\refint\Inventory.Contract.dll
 C:\Users\Ric\source\repos\InvMgt\Inventory.Contract\obj\Release\net8.0\Inventory.Contract.pdb
 C:\Users\Ric\source\repos\InvMgt\Inventory.Contract\obj\Release\net8.0\ref\Inventory.Contract.dll
+C:\Users\Ric\source\repos\InvMgt\Inventory.Contract\obj\Release\net8.0\Inventory.Contract.sourcelink.json

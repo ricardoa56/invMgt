@@ -224,3 +224,4 @@ C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\Inventory.API.
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\Inventory.API.genruntimeconfig.cache
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\ref\Inventory.API.dll
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\bin\Release\net8.0\dotnet-tools.json
+C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\Inventory.API.sourcelink.json

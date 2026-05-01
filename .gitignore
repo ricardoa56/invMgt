@@ -167,3 +167,19 @@ obj/
 /Inventory.API/obj/publish/win-x64/project.assets.json
 /Inventory.API/obj/publish/win-x64/project.nuget.cache
 /Inventory.API/obj/Release/net8.0/ref/Inventory.API.dll
+
+
+# Build folders
+bin/
+obj/
+
+# Publish output
+publish/
+
+# .NET artifacts
+*.dll
+*.exe
+*.pdb
+
+# Optional (Visual Studio)
+.vs/

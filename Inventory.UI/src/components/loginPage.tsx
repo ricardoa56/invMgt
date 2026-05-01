@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-
+import axiosClient from "./util/axiosClient";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -16,23 +16,24 @@ const LoginPage = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
+    const payload = {
+      username: username || "",
+      password: password || "",
+      account: account || "",
+    };
     try {
-      const response = await fetch("https://localhost:7144/api/User/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, account }),
-      });
+      const response = await axiosClient.post("/User/login", payload);
 
-      if (!response.ok) {
-        const data = await response.json();
+      if (!response.data) {
+        const data = response.data;
         setError(data || "Login failed.");
         setLoading(false);
         return;
       }
 
-      const data = await response.json();
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('userid', data.userId);
+      const data = response.data;
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userid", data.userId);
       login(data.token);
       navigate("/");
     } catch (err) {
@@ -53,7 +54,7 @@ const LoginPage = () => {
               type="text"
               className="form-control"
               value={username}
-              onChange={e => setUsername(e.target.value)}
+              onChange={(e) => setUsername(e.target.value)}
               required
               autoFocus
             />
@@ -64,7 +65,7 @@ const LoginPage = () => {
               type="password"
               className="form-control"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
@@ -76,14 +77,14 @@ const LoginPage = () => {
               onChange={(e) => setAccount(e.target.value)}
               required
             >
-              <option value="" disabled>Select an account</option>
+              <option value="" disabled>
+                Select an account
+              </option>
               <option value="Account01">Account01</option>
               <option value="Account02">Account02</option>
             </select>
-            </div>
-          {error && (
-            <div className="alert alert-danger py-2">{error}</div>
-          )}
+          </div>
+          {error && <div className="alert alert-danger py-2">{error}</div>}
           <button
             type="submit"
             className="btn btn-primary w-100"
