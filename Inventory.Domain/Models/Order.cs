@@ -20,6 +20,6 @@ namespace Inventory.Domain.Models
 
         public ICollection<OrderItem> Items { get; set; } = new List<OrderItem>();
         public List<Payment>? Payments { get; set; }
-        public Customer? Customer { get; set; }
+        public Customer Customer { get; set; } = null!;
     }
 }

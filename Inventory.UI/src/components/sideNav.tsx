@@ -8,6 +8,7 @@ function SideNav() {
   const location = useLocation();
   const [inventoryOpen, setInventoryOpen] = useState(true); // Keep open by default
   const [ordersOpen, setOrdersOpen] = useState(true); // Keep open by default
+  const [reportsOpen, setReportsOpen] = useState(true);
 
   if (!token) return null;
 
@@ -108,7 +109,7 @@ function SideNav() {
                     className={`side-nav-link sub-link${isActive("/orders/refund")}`}
                     to="/orders/refund"
                   >
-                    Refunds
+                    Refund
                   </Link>
                 </li>
                 <li>
@@ -117,6 +118,30 @@ function SideNav() {
                     to="/customers/view"
                   >
                     Customers
+                  </Link>
+                </li>
+              </ul>
+            )}
+          </li>
+
+          {/* Reports Parent Link */}
+          <li>
+            <div
+              className="side-nav-link nav-parent"
+              onClick={() => setReportsOpen(!reportsOpen)}
+              style={{ cursor: "pointer" }}
+            >
+              Reports
+            </div>
+
+            {reportsOpen && (
+              <ul className="side-nav-sub">
+                <li>
+                  <Link
+                    className={`side-nav-link sub-link${isActive("/orders/salesreport")}`}
+                    to="/orders/salesreport"
+                  >
+                    Sales Report
                   </Link>
                 </li>
               </ul>

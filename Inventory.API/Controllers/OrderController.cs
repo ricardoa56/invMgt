@@ -79,5 +79,14 @@ namespace Inventory.API.Controllers
 
             return Ok(orders);
         }
+
+        [HttpGet("salesreport")]
+        public async Task<IActionResult> GetSalesReport([FromQuery] GetSalesReportRequest request)
+        {
+            var salesReport = await _orderHandler.GetSalesReport(request.StartDate, request.EndDate);
+
+            return Ok(salesReport);
+
+        }
     }
 }

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Inventory.Handlers")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0c9b4493c9c993a3a0f5cd2f9c3fa294adcdcf43")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8916241d9945315b5574c40515e8a83f448f52d4")]
 [assembly: System.Reflection.AssemblyProductAttribute("Inventory.Handlers")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Inventory.Handlers")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

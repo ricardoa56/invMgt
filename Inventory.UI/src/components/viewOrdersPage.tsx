@@ -13,8 +13,8 @@ import {
 } from "material-react-table";
 import type { OrdersOnly } from "./interface/OrdersOnly";
 import OrdersDialog from "./popOrders";
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const ViewOrdersPage: React.FC = () => {
@@ -52,15 +52,14 @@ const ViewOrdersPage: React.FC = () => {
   };
 
   const handleMarkAsPaid = async (orderId: number) => {
-  try {
-    // 1. Backend Call
-    await axiosClient.put(`order/paid/${orderId}`);
-    await fetchOrders();
-    
-  } catch (error) {
-    console.error("Payment failed", error);
-  }
-};
+    try {
+      // 1. Backend Call
+      await axiosClient.put(`order/paid/${orderId}`);
+      await fetchOrders();
+    } catch (error) {
+      console.error("Payment failed", error);
+    }
+  };
 
   const fetchOrders = async () => {
     try {
@@ -112,21 +111,21 @@ const ViewOrdersPage: React.FC = () => {
         },
       },
       {
-        accessorKey: "totalAmount",
-        header: "Total Amount",
-        size: 150,
-        Cell: ({ cell }) => (
-          <Box sx={{ fontWeight: "bold" }}>
-            ${cell.getValue<number>().toLocaleString()}
-          </Box>
-        ),
-      },
-      {
         accessorKey: "orderDate",
         header: "Order Date",
         size: 180,
         Cell: ({ cell }) =>
           new Date(cell.getValue<string>()).toLocaleDateString(),
+      },
+      {
+        accessorKey: "totalAmount",
+        header: "Total Amount",
+        size: 150,
+        Cell: ({ cell }) => (
+          <Box sx={{ fontWeight: "bold" }}>
+            {cell.getValue<number>().toLocaleString()}
+          </Box>
+        ),
       },
     ],
     [orders],

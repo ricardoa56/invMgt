@@ -28,12 +28,12 @@ namespace Inventory.Handlers
         {
             var order = await this.db.Orders.
                 Include(o => o.Items)
-                .FirstOrDefaultAsync(o => o.OrderId == orderId);
+                .FirstOrDefaultAsync(o => o.OrderId == orderId) ?? throw new Exception($"Could not find order {orderId}");
             order.Status = OrderStatus.Paid;
 
             foreach (var item in order.Items)
             {
-                var tranBalance = await this.db.InventoryBalances.FirstOrDefaultAsync(iv => iv.ProductId == item.ProductId);
+                var tranBalance = await this.db.InventoryBalances.FirstOrDefaultAsync(iv => iv.ProductId == item.ProductId) ?? throw new Exception("Could not find inventory product");
                 tranBalance.QuantityCommitted = 0;
             }
             await this.db.SaveChangesAsync();
@@ -68,6 +68,7 @@ namespace Inventory.Handlers
                     .Select(p => new
                     {
                         p.Price.SellingPrice,
+                        p.Price.CapitalPrice,
                         p.ProductId
                     })
                     .SingleOrDefaultAsync(p => p.ProductId == orderItem.ProductId)?? throw new Exception("Product not found");
@@ -75,10 +76,11 @@ namespace Inventory.Handlers
                 {
                     ProductId = orderItem.ProductId,
                     Quantity = orderItem.Quantity,
-                    UnitPrice = prod.SellingPrice
+                    SellingPrice = prod.SellingPrice,
+                    CapitalPrice = prod.CapitalPrice
                 };
 
-                var tranBalance = await this.db.InventoryBalances.FirstOrDefaultAsync(iv => iv.ProductId == item.ProductId);
+                var tranBalance = await this.db.InventoryBalances.FirstOrDefaultAsync(iv => iv.ProductId == item.ProductId) ?? throw new Exception("Could not find inventory product");
                 tranBalance.QuantityCommitted += item.Quantity;
                 tranBalance.QuantityOnHand -= item.Quantity;
 
@@ -106,7 +108,7 @@ namespace Inventory.Handlers
                 //remove items from transaction ballanced uncommited qty
                 foreach(var item in order.Items)
                 {
-                    var tranBalance = await this.db.InventoryBalances.FirstOrDefaultAsync(iv => iv.ProductId == item.ProductId);
+                    var tranBalance = await this.db.InventoryBalances.FirstOrDefaultAsync(iv => iv.ProductId == item.ProductId) ?? throw new Exception("Could not find inventory product");
                     tranBalance.QuantityCommitted -= item.Quantity;
                     tranBalance.QuantityOnHand += item.Quantity;
                 }
@@ -130,15 +132,16 @@ namespace Inventory.Handlers
                         OrderId = order.OrderId, // Explicitly link it
                         ProductId = item.ProductId,
                         Quantity = item.Quantity,
-                        UnitPrice = prod.Price.SellingPrice
+                        SellingPrice = prod.Price.SellingPrice,
+                        CapitalPrice = prod.Price.CapitalPrice,
                     });
-                    var tranBalance = await this.db.InventoryBalances.FirstOrDefaultAsync(iv => iv.ProductId == item.ProductId);
+                    var tranBalance = await this.db.InventoryBalances.FirstOrDefaultAsync(iv => iv.ProductId == item.ProductId) ?? throw new Exception("Could not find inventory product");
                     tranBalance.QuantityCommitted += item.Quantity;
                     tranBalance.QuantityOnHand -= item.Quantity;
                 }
             }
 
-            order.TotalAmount = order.Items.Sum(i => i.Quantity * i.UnitPrice);
+            order.TotalAmount = order.Items.Sum(i => i.Quantity * i.SellingPrice);
 
             // 3. Save everything in one transaction
             await this.db.SaveChangesAsync();
@@ -170,7 +173,7 @@ namespace Inventory.Handlers
                         OrderItemId = i.OrderItemId,
                         ProductId = i.ProductId,
                         Quantity = i.Quantity,
-                        SellingPrice = i.UnitPrice,
+                        SellingPrice = i.SellingPrice,
                         ProductName = i.Product.Name,
                         ImageName = i.Product.ImageName,
                     }).ToList()
@@ -190,6 +193,40 @@ namespace Inventory.Handlers
                     Remarks = o.Remarks,
                     TotalAmount = o.TotalAmount
                 });
+        }
+
+        public async Task<List<GetSalesReportResponse>> GetSalesReport(DateTime startDate, DateTime endDate)
+        {
+            var report = await this.db.OrderItems
+                    .Include(o => o.Order)
+                    .Include(o => o.Order.Customer)
+                    .Where(item => item.Order.Status == OrderStatus.Paid
+                    && item.Order.CreatedDate >= startDate
+                    && item.Order.CreatedDate <= ToEndOfDay(endDate))
+                    .GroupBy(item => new {
+                        item.OrderId,
+                        item.Order.Customer.Name,
+                        item.Order.OrderDate
+                    })
+                    .Select(group => new GetSalesReportResponse
+                    {
+                        OrderId = group.Key.OrderId,
+                        CustomerName = group.Key.Name,
+                        OrderDate = group.Key.OrderDate,
+                        CapitalAmount = group.Sum(i => i.Quantity * i.CapitalPrice),
+                        TotalAmount = group.Sum(i => i.Quantity * i.SellingPrice),
+                        Earnings = group.Sum(i => i.Quantity * i.SellingPrice) -
+                                   group.Sum(i => i.Quantity * i.CapitalPrice)
+                    })
+                    .OrderByDescending(o => o.OrderDate)
+                    .ToListAsync();
+
+            return report;
+        }
+
+        public static DateTime ToEndOfDay(DateTime date)
+        {
+            return date.Date.AddDays(1).AddTicks(-1);
         }
 
         public async Task<GetOrdersResponse> GetOrderAsync(int orderId)

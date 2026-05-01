@@ -10,7 +10,7 @@ namespace Inventory.Integration.Test;
 [TestClass]
 public class Inventory_OneGo_Test
 {
-    protected IServiceProvider ServiceProvider { get; private set; }
+    protected IServiceProvider ServiceProvider { get; private set; } = null!;
 
     [TestInitialize]
     public void Initialize()
