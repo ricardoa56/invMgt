@@ -13,5 +13,7 @@ namespace Inventory.Domain.Models
         public decimal CapitalPrice { get; set; }
         public decimal SellingPrice { get; set; }
         public Product Product { get; set; } = null!;
+        public int RefundedQty { get; set; }
+        public string? Remarks { get; set; }
     }
 }

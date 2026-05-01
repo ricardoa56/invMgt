@@ -10,5 +10,7 @@
         public int Quantity { get; set; }
         public decimal SellingPrice { get; set; }
         public decimal TotalPrice { get; set; }
+
+        public decimal RefundedQty { get; set; }
     }
 }

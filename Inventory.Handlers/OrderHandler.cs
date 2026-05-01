@@ -2,6 +2,7 @@
 using Inventory.Domain;
 using Inventory.Domain.Enums;
 using Inventory.Domain.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Inventory.Handlers
@@ -172,10 +173,11 @@ namespace Inventory.Handlers
                     {
                         OrderItemId = i.OrderItemId,
                         ProductId = i.ProductId,
-                        Quantity = i.Quantity,
+                        Quantity = i.Quantity - i.RefundedQty,
                         SellingPrice = i.SellingPrice,
                         ProductName = i.Product.Name,
                         ImageName = i.Product.ImageName,
+                        RefundedQty = i.RefundedQty
                     }).ToList()
                 });
         }
@@ -213,10 +215,10 @@ namespace Inventory.Handlers
                         OrderId = group.Key.OrderId,
                         CustomerName = group.Key.Name,
                         OrderDate = group.Key.OrderDate,
-                        CapitalAmount = group.Sum(i => i.Quantity * i.CapitalPrice),
-                        TotalAmount = group.Sum(i => i.Quantity * i.SellingPrice),
-                        Earnings = group.Sum(i => i.Quantity * i.SellingPrice) -
-                                   group.Sum(i => i.Quantity * i.CapitalPrice)
+                        CapitalAmount = group.Sum(i => (i.Quantity - i.RefundedQty) * i.CapitalPrice),
+                        TotalAmount = group.Sum(i => (i.Quantity - i.RefundedQty) * i.SellingPrice),
+                        Earnings = group.Sum(i => (i.Quantity - i.RefundedQty) * i.SellingPrice) -
+                                   group.Sum(i => (i.Quantity - i.RefundedQty) * i.CapitalPrice)
                     })
                     .OrderByDescending(o => o.OrderDate)
                     .ToListAsync();
@@ -247,6 +249,55 @@ namespace Inventory.Handlers
                 .FirstOrDefaultAsync();
 
             return orderResponse ?? new GetOrdersResponse();
+        }
+        public async Task<bool> ProcessRefund(RefundRequest request)
+        {
+            using var transaction = await this.db.Database.BeginTransactionAsync();
+            try
+            {
+                decimal totalRefundDeduction = 0;
+                foreach (OrderItemRequest item in request.Items)
+                {
+                    var originalItem = await this.db.OrderItems
+                      .FirstOrDefaultAsync(x => x.OrderId == request.OrderId && x.ProductId == item.ProductId) ??
+                      throw new Exception($"Item not found for Product ID {item.ProductId}");
+
+                    // 1. Calculate what the new total would be
+                    int totalPotentialRefund = originalItem.RefundedQty + item.Quantity;
+
+                    // 2. Compare it to the original purchase quantity
+                    if (totalPotentialRefund > originalItem.Quantity)
+                    {
+                        // Calculate how many are actually left to be refunded for a better error message
+                        int remainingEligible = originalItem.Quantity - originalItem.RefundedQty;
+
+                        throw new Exception(
+                            $"Cannot refund {item.Quantity} units for Product ID {item.ProductId}. " +
+                            $"Only {remainingEligible} units remain eligible for refund (Total bought: {originalItem.Quantity}, Already refunded: {originalItem.RefundedQty})."
+                        );
+                    }
+
+                    // 3. If valid, update the record
+                    originalItem.RefundedQty = totalPotentialRefund;
+
+                    // Append remarks if there's already text there
+                    originalItem.Remarks = string.IsNullOrEmpty(originalItem.Remarks)
+                        ? item.Remarks
+                        : $"{originalItem.Remarks} | {item.Remarks}";
+
+                    totalRefundDeduction += (item.Quantity * originalItem.SellingPrice);
+                }
+                var order = await this.db.Orders.FirstOrDefaultAsync(o => o.OrderId == request.OrderId) ?? throw new Exception("Order not found");
+                order.TotalAmount -= totalRefundDeduction;
+                await this.db.SaveChangesAsync();
+                await transaction.CommitAsync();
+                return true;
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                return false;
+            }
         }
     }
 }

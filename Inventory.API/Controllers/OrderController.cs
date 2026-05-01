@@ -86,7 +86,14 @@ namespace Inventory.API.Controllers
             var salesReport = await _orderHandler.GetSalesReport(request.StartDate, request.EndDate);
 
             return Ok(salesReport);
+        }
 
+        [HttpPost("refund")]
+        public async Task<IActionResult> RefundOrder([FromBody] RefundRequest request)
+        {
+            var response = await _orderHandler.ProcessRefund(request);
+
+            return Ok(response);
         }
     }
 }

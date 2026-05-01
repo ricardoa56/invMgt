@@ -17,6 +17,7 @@ import StockAdjustmentPage from "./components/stockAdjustmentPage";
 import ViewOrdersPage from "./components/viewOrdersPage";
 import ViewCustomersPage from "./components/viewCustomersPage";
 import SalesReportPage from "./components/viewSalesReportPage";
+import ViewRefundsPage from "./components/viewRefundPage";
 
 const corporateTheme = createTheme({
   typography: {
@@ -38,6 +39,7 @@ function getPageTitle(pathname: string) {
   if (pathname === "/orders/view") return "Orders";
   if (pathname === "/customers/view") return "Customers";
   if (pathname === "/orders/salesreport") return "Sales Report";
+  if (pathname === "/orders/refund") return "Refund";
   if (pathname === "/login") return "Inventory Management System - Login";
   return "Inventory Management System";
 }
@@ -134,6 +136,15 @@ function Layout() {
               element={
                 <ProtectedRoute>
                   <SalesReportPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="orders/refund"
+              element={
+                <ProtectedRoute>
+                  <ViewRefundsPage />
                 </ProtectedRoute>
               }
             />
