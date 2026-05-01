@@ -129,3 +129,13 @@ obj/
 /Inventory.Domain/bin/Debug/net8.0/Inventory.Domain.dll
 /Inventory.Domain/bin/Debug/net8.0/Inventory.Domain.pdb
 /Inventory.Handlers/obj/Debug/net8.0/refint/Inventory.Handlers.dll
+/.vs/InvMgt.slnx/DesignTimeBuild/.dtbcache.v2
+/.vs/InvMgt.slnx/v18/.futdcache.v2
+/.vs/InvMgt.slnx/v18/.suo
+/.vs/InvMgt.slnx/v18/DocumentLayout.backup.json
+/.vs/InvMgt.slnx/v18/DocumentLayout.json
+/Inventory.API/obj/Debug/net8.0/ApiEndpoints.json
+/Inventory.API/obj/Debug/net8.0/Inventory.API.AssemblyInfo.cs
+/Inventory.Contract/obj/Debug/net8.0/Inventory.Contract.AssemblyInfo.cs
+/Inventory.Domain/obj/Debug/net8.0/Inventory.Domain.AssemblyInfo.cs
+/Inventory.Integration.Test/obj/Debug/net8.0/Inventory.Integration.Test.AssemblyInfo.cs
