@@ -80,7 +80,7 @@ const StockAdjustmentPage = () => {
           options={products}
           getOptionLabel={(option) => option.name}
           value={selectedProduct}
-          onChange={(e, val) => setSelectedProduct(val)}
+          onChange={(_, val) => setSelectedProduct(val)}
           renderInput={(params) => (
             <TextField {...params} label="Select Product" required />
           )}

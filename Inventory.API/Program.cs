@@ -66,11 +66,14 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: allowedOrigins, policy =>
     {
-        policy.WithOrigins("http://localhost:62675")
-        .WithOrigins("http://localhost:5174")
-        .WithOrigins("http://localhost:62676")
+        policy.WithOrigins(
+                "http://localhost:62675",
+                "http://localhost:5174",
+                "http://localhost:62676"
+              )
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials(); // Often needed for JWT/Cookies
     });
 });
 builder.Services.AddHttpContextAccessor();
@@ -119,6 +122,6 @@ app.UseAuthorization();
 //app.UseRateLimiter();
 app.UseMiddleware<RequestLoggingMiddleware>();
 
-app.MapControllers()
-    .RequireRateLimiting("TenantRateLimit");
+app.MapControllers();
+    //.RequireRateLimiting("TenantRateLimit");
 app.Run();

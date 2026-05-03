@@ -15,6 +15,6 @@
         public Category? Category { get; set; }
         public UnitOfMeasurement? UnitOfMeasurement { get; set; }
 
-        public virtual ProductPrice Price { get; set; } = new ProductPrice();
+        public virtual ProductPrice? Price { get; set; }
     }
 }

@@ -39,12 +39,19 @@ namespace Inventory.Handlers
             return currentPrice;
         }
 
-        public async Task<List<ProductPrice>> GetAllProductPrice()
+        public async Task<List<ProductPriceResponse>> GetAllProductPrice()
         {
             return await this.db.ProductPrices
-                .Include(p => p.Product)
                 .Where(p => p.IsActive)
-                .ToListAsync();
+                .Select(p => new ProductPriceResponse // This class is your "Shield"
+                {
+                    Id = p.Id,
+                    ProductId = p.ProductId,
+                    ProductName = p.Product.Name, // Uses the link, but only grabs the string
+                    CapitalPrice = p.CapitalPrice,
+                    SellingPrice = p.SellingPrice,
+                    CreatedAt = p.CreatedAt
+                }).ToListAsync();
         }
 
         public async Task<bool> IsProductPriceExists(int productId) => await this.db.ProductPrices.AnyAsync(pp => pp.ProductId == productId && pp.IsActive);

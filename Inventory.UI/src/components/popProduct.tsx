@@ -51,8 +51,7 @@ const ProductDialog: React.FC<ProductDialogProps> = ({ open, onClose, initialDat
             description: formData.get('description') as string,
             categoryId: formData.get('categoryId') ? Number(formData.get('categoryId')) : 0,
             unitOfMeasurementId: initialData?.unitOfMeasurementId ?? 1,
-            createdBy: initialData?.createdBy ?? 1,
-            imageName: initialData?.imageName || 'default.jpg'
+            createdBy: initialData?.createdBy ?? 1
         };
 
         await onSave(data);

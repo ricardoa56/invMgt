@@ -41,12 +41,11 @@ namespace Inventory.Domain
                 .HasForeignKey("UnitOfMeasurementId")
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Product - UnitOfMeasurement (Many-to-One)
-            modelBuilder.Entity<Product>()
-                .HasOne(p => p.Price)
-                .WithMany() // UnitOfMeasurement does not have Products collection
-                .HasForeignKey("ProductId")
-                .IsRequired(false);
+            modelBuilder.Entity<ProductPrice>()
+                .HasOne(pp => pp.Product)      // The Price has a Product
+                .WithOne(p => p.Price)         // The Product has a Price
+                .HasForeignKey<ProductPrice>(pp => pp.ProductId) // The Foreign Key is on ProductPrice
+                .OnDelete(DeleteBehavior.Cascade); // Optional: Delete price if product is deleted
 
             // InventoryBalance - Product (Many-to-One)
             modelBuilder.Entity<InventoryBalance>()

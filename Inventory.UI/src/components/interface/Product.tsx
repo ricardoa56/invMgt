@@ -5,5 +5,4 @@ export interface Product {
   categoryId: number;
   unitOfMeasurementId: number;
   createdBy: number;
-  imageName: string;
 }

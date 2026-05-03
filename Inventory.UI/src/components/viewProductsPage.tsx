@@ -35,6 +35,7 @@ const ViewProductsPage: React.FC = () => {
       await axiosClient.put(`${"product"}/${selectedProduct.id}`, data);
     } else {
       data.createdBy = Number(localStorage.getItem("userid"));
+      console.log(`payload is ${data}`)
       await axiosClient.post("product", data);
     }
     fetchProducts();

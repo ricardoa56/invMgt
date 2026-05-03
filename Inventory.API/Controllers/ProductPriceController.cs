@@ -52,17 +52,7 @@ namespace Inventory.API.Controllers
         public async Task<ActionResult<List<ProductPriceResponse>>> GetAllProductPrice()
         {
             var productPrices = await _productPriceHandler.GetAllProductPrice();
-            var response = productPrices.Select(p => new ProductPriceResponse
-            {
-                Id = p.Id,
-                ProductName = p.Product.Name,
-                ProductId = p.ProductId,
-                CapitalPrice = p.CapitalPrice,
-                SellingPrice = p.SellingPrice,
-                CreatedAt = p.CreatedAt
-            }).ToList();
-
-            return Ok(response);
+            return Ok(productPrices);
         }
 
         [HttpGet("{id}")]
