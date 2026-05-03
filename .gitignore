@@ -245,3 +245,12 @@ publish/
 /Inventory.Integration.Test/obj/Release/net8.0/Inventory.Integration.Test.AssemblyInfo.cs
 /Inventory.Integration.Test/obj/Release/net8.0/Inventory.Integration.Test.AssemblyInfoInputs.cache
 /Inventory.Integration.Test/obj/Release/net8.0/Inventory.Integration.Test.csproj.AssemblyReference.cache
+/Inventory.Contract/obj/Inventory.Contract.csproj.nuget.dgspec.json
+/Inventory.Contract/obj/project.assets.json
+/Inventory.Contract/obj/project.nuget.cache
+/Inventory.Domain/obj/Inventory.Domain.csproj.nuget.dgspec.json
+/Inventory.Domain/obj/project.assets.json
+/Inventory.Domain/obj/project.nuget.cache
+/Inventory.Handlers/obj/Inventory.Handlers.csproj.nuget.dgspec.json
+/Inventory.Handlers/obj/project.assets.json
+/Inventory.Handlers/obj/project.nuget.cache
