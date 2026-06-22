@@ -40,10 +40,10 @@ namespace Inventory.Contract
         public InventoryDbContext CreateDbContext(string tenantDbName)
         {
             // Clone your base connection string
-            var baseConnection = _configuration.GetConnectionString("DefaultConnection");
+            var baseConnection = _configuration.GetConnectionString("AccountConnection");
 
             // Replace the database name (assumes `Database=` exists in string)
-            var connectionString = baseConnection?.Replace("InventoryDB", tenantDbName);
+            var connectionString = baseConnection?.Replace("db56911", "db55958");  //tenantDbName); --temporarily hardcoded for testing
 
             var optionsBuilder = new DbContextOptionsBuilder<InventoryDbContext>();
             optionsBuilder.UseSqlServer(connectionString);

@@ -17,12 +17,14 @@ namespace Inventory.API.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly InventoryDbContext _context;
+        private readonly InventoryDbContext _inventoryDBContext;
+        private readonly InventoryDbContext _tenantDBContext;
         private readonly IConfiguration _configuration;
 
-        public UserController(InventoryDbContext context, IConfiguration configuration)
+        public UserController(InventoryDbContext inventoryDBContext, InventoryDbContext tenantDBContext, IConfiguration configuration)
         {
-            _context = context;
+            _inventoryDBContext = inventoryDBContext;
+            _tenantDBContext = tenantDBContext;
             _configuration = configuration;
         }
 
@@ -31,7 +33,9 @@ namespace Inventory.API.Controllers
         public IActionResult Login([FromBody] LoginRequest request)
         {
             // Step 1. Find tenant account using master DB (_context)
-            var account = _context.Accounts
+            var connstring = _configuration.GetConnectionString("DefaultConnection");
+            _tenantDBContext.Database.SetConnectionString(connstring);
+            var account = _tenantDBContext.Accounts
                 .FirstOrDefault(a =>
                     a.AccountName == request.Account &&
                     a.IsActive);
@@ -40,7 +44,7 @@ namespace Inventory.API.Controllers
                 return Unauthorized("Account not found or inactive.");
 
             // Step 2. Build connection string for tenant DB
-            var baseConn = new SqlConnectionStringBuilder(_configuration.GetConnectionString("DefaultConnection"))
+            var baseConn = new SqlConnectionStringBuilder(_configuration.GetConnectionString("AccountConnection"))
             {
                 InitialCatalog = account.DatabaseName
             };
@@ -100,7 +104,7 @@ namespace Inventory.API.Controllers
         [AllowAnonymous]
         public IActionResult Register([FromBody] RegisterUserRequest request)
         {
-            if (_context.Users.Any(u => u.Username == request.Username))
+            if (_inventoryDBContext.Users.Any(u => u.Username == request.Username))
                 return BadRequest("Username already exists.");
 
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -118,8 +122,8 @@ namespace Inventory.API.Controllers
                 CreatedBy = 1 // Or set from context
             };
 
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            _inventoryDBContext.Users.Add(user);
+            _inventoryDBContext.SaveChanges();
 
             return Ok(new { user.UserId, user.Username, user.FullName, user.Email, user.Role });
         }
@@ -149,7 +153,7 @@ namespace Inventory.API.Controllers
         public IActionResult Profile()
         {
             var username = User.Identity?.Name;
-            var user = _context.Users.FirstOrDefault(u => u.Username == username);
+            var user = _inventoryDBContext.Users.FirstOrDefault(u => u.Username == username);
             if (user == null)
                 return NotFound();
 

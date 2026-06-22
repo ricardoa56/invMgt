@@ -1,5 +1,6 @@
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\bin\Release\net8.0\appsettings.Development.json
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\bin\Release\net8.0\appsettings.json
+C:\Users\Ric\source\repos\InvMgt\Inventory.API\bin\Release\net8.0\dotnet-tools.json
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\bin\Release\net8.0\Inventory.API.staticwebassets.endpoints.json
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\bin\Release\net8.0\LatoFont\Lato-Black.ttf
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\bin\Release\net8.0\LatoFont\Lato-BlackItalic.ttf
@@ -207,6 +208,7 @@ C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\Inventory.API.
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\Inventory.API.csproj.CoreCompileInputs.cache
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\Inventory.API.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\Inventory.API.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\Inventory.API.sourcelink.json
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\rjimswa.dswa.cache.json
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\rjsmrazor.dswa.cache.json
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\rjsmcshtml.dswa.cache.json
@@ -223,5 +225,3 @@ C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\refint\Invento
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\Inventory.API.pdb
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\Inventory.API.genruntimeconfig.cache
 C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\ref\Inventory.API.dll
-C:\Users\Ric\source\repos\InvMgt\Inventory.API\bin\Release\net8.0\dotnet-tools.json
-C:\Users\Ric\source\repos\InvMgt\Inventory.API\obj\Release\net8.0\Inventory.API.sourcelink.json
