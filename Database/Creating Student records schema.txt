@@ -1,0 +1,174 @@
+-- SQL Server schema for student records and attendance.
+-- This script is intended for a tenant database.
+
+-- ==========================================
+-- 1. BASE PERSON & USER MANAGEMENT
+-- ==========================================
+
+CREATE TABLE Person (
+    person_id INT IDENTITY(1,1) PRIMARY KEY,
+    first_name NVARCHAR(100) NOT NULL,
+    middle_name NVARCHAR(100) NULL,
+    last_name NVARCHAR(100) NOT NULL,
+    email NVARCHAR(150) NULL UNIQUE,
+    phone_number VARCHAR(20),
+    created_at DATETIME2(0) NOT NULL DEFAULT SYSUTCDATETIME()
+);
+
+
+-- ==========================================
+-- 2. CLASSROOM & SECTIONS
+-- ==========================================
+
+CREATE TABLE Classroom (
+    classroom_id INT IDENTITY(1,1) PRIMARY KEY,
+    room_name NVARCHAR(50) NOT NULL,
+    building NVARCHAR(50) NULL
+);
+
+CREATE TABLE Teacher (
+    teacher_id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT UNIQUE NOT NULL,
+    person_id INT UNIQUE NOT NULL,
+    employee_number NVARCHAR(50) UNIQUE NOT NULL,
+    CONSTRAINT fk_teacher_person FOREIGN KEY (person_id) REFERENCES Person(person_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Sections (
+    section_id INT IDENTITY(1,1) PRIMARY KEY,
+    section_name NVARCHAR(100) NOT NULL, -- e.g., 'Grade 10 - Section A'
+    teacher_id INT NULL,                 -- Assigned teacher/advisor
+    classroom_id INT NULL,
+    shift_type NVARCHAR(20) NOT NULL DEFAULT 'DAY',
+    start_time TIME,
+    end_time TIME,
+    CONSTRAINT fk_section_teacher FOREIGN KEY (teacher_id) REFERENCES Teacher(teacher_id) ON DELETE SET NULL,
+    CONSTRAINT fk_section_classroom FOREIGN KEY (classroom_id) REFERENCES Classroom(classroom_id) ON DELETE SET NULL
+);
+
+
+-- ==========================================
+-- 3. STUDENTS & GUARDIANS
+-- ==========================================
+
+CREATE TABLE Student (
+    student_id INT IDENTITY(1,1) PRIMARY KEY,
+    person_id INT UNIQUE NOT NULL,
+    section_id INT NOT NULL,
+    school_student_number NVARCHAR(50) UNIQUE NOT NULL,
+    tracking_code NVARCHAR(20) UNIQUE NOT NULL,
+    qr_code_hash NVARCHAR(255) NULL UNIQUE,
+    biometric_template_encrypted VARBINARY(MAX) NULL,
+    created_at DATETIME2(0) NOT NULL DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT fk_student_person FOREIGN KEY (person_id) REFERENCES Person(person_id) ON DELETE CASCADE,
+    CONSTRAINT fk_student_section FOREIGN KEY (section_id) REFERENCES Sections(section_id)
+);
+
+CREATE INDEX idx_student_tracking_code ON Student(tracking_code);
+
+CREATE TABLE Guardian (
+    guardian_id INT IDENTITY(1,1) PRIMARY KEY,
+    person_id INT UNIQUE NOT NULL,
+    relationship_type NVARCHAR(50) NULL,
+    contact_number NVARCHAR(20) NULL,
+    preferred_channel NVARCHAR(20) NOT NULL DEFAULT 'APP',
+    messenger_psid NVARCHAR(100) NULL,
+    CONSTRAINT fk_guardian_person FOREIGN KEY (person_id) REFERENCES Person(person_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Student_Guardian (
+    student_id INT NOT NULL,
+    guardian_id INT NOT NULL,
+    is_primary_contact BIT NOT NULL DEFAULT 1,
+    PRIMARY KEY (student_id, guardian_id),
+    CONSTRAINT fk_sg_student FOREIGN KEY (student_id) REFERENCES Student(student_id) ON DELETE NO ACTION,
+    CONSTRAINT fk_sg_guardian FOREIGN KEY (guardian_id) REFERENCES Guardian(guardian_id) ON DELETE NO ACTION
+);
+
+
+-- ==========================================
+-- 4. ATTENDANCE SYSTEM
+-- ==========================================
+
+CREATE TABLE Attendance_Record (
+    attendance_id INT IDENTITY(1,1) PRIMARY KEY,
+    student_id INT NOT NULL,
+    section_id INT NOT NULL,
+    check_in_at DATETIME2(0) NULL,
+    check_out_at DATETIME2(0) NULL,
+    check_in_latitude DECIMAL(9,6) NULL,
+    check_in_longitude DECIMAL(9,6) NULL,
+    check_in_accuracy_meters DECIMAL(8,2) NULL,
+    check_out_latitude DECIMAL(9,6) NULL,
+    check_out_longitude DECIMAL(9,6) NULL,
+    check_out_accuracy_meters DECIMAL(8,2) NULL,
+    verification_method NVARCHAR(20) NOT NULL,
+    scanned_by_teacher_id INT NOT NULL,
+    corrected_by_teacher_id INT NULL,
+    corrected_at DATETIME2(0) NULL,
+    correction_reason NVARCHAR(500) NULL,
+    created_at DATETIME2(0) NOT NULL DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT fk_att_student FOREIGN KEY (student_id) REFERENCES Student(student_id) ON DELETE CASCADE,
+    CONSTRAINT fk_att_section FOREIGN KEY (section_id) REFERENCES Sections(section_id),
+    CONSTRAINT fk_att_teacher FOREIGN KEY (scanned_by_teacher_id) REFERENCES Teacher(teacher_id),
+    CONSTRAINT fk_att_corrected_by FOREIGN KEY (corrected_by_teacher_id) REFERENCES Teacher(teacher_id),
+    CONSTRAINT ck_att_verification_method CHECK (verification_method IN ('QR_CODE', 'BIOMETRIC')),
+    CONSTRAINT ck_att_times CHECK (check_out_at IS NULL OR check_in_at IS NULL OR check_out_at >= check_in_at),
+    CONSTRAINT ck_att_coordinates CHECK (
+        (check_in_latitude IS NULL AND check_in_longitude IS NULL AND check_in_accuracy_meters IS NULL)
+        OR (check_in_latitude BETWEEN -90 AND 90 AND check_in_longitude BETWEEN -180 AND 180 AND check_in_accuracy_meters >= 0)
+    ),
+    CONSTRAINT ck_att_checkout_coordinates CHECK (
+        (check_out_latitude IS NULL AND check_out_longitude IS NULL AND check_out_accuracy_meters IS NULL)
+        OR (check_out_latitude BETWEEN -90 AND 90 AND check_out_longitude BETWEEN -180 AND 180 AND check_out_accuracy_meters >= 0)
+    )
+);
+
+
+-- ==========================================
+-- 5. NOTIFICATIONS & EVENTS
+-- ==========================================
+
+CREATE TABLE Notification_Event (
+    event_id INT IDENTITY(1,1) PRIMARY KEY,
+    section_id INT NULL,                 -- NULL means all sections
+    created_by_teacher_id INT NOT NULL,  -- Teacher who added the notification/event
+    title NVARCHAR(150) NOT NULL,
+    content NVARCHAR(MAX) NOT NULL,
+    event_date DATETIME2(0) NULL,
+    created_at DATETIME2(0) NOT NULL DEFAULT SYSUTCDATETIME(),
+    CONSTRAINT fk_event_section FOREIGN KEY (section_id) REFERENCES Sections(section_id) ON DELETE CASCADE,
+    CONSTRAINT fk_event_teacher FOREIGN KEY (created_by_teacher_id) REFERENCES Teacher(teacher_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Notification_Log (
+    notification_log_id INT IDENTITY(1,1) PRIMARY KEY,
+    guardian_id INT NOT NULL,
+    student_id INT NOT NULL,
+    attendance_id INT,                   -- Associated scan event (if attendance alert)
+    event_id INT,                        -- Associated classroom event (if announcement)
+    delivery_channel NVARCHAR(20) NOT NULL,
+    delivery_status NVARCHAR(20) NOT NULL DEFAULT 'PENDING',
+    sent_at DATETIME2(0) NULL,
+    attempt_count INT NOT NULL DEFAULT 0,
+    failure_message NVARCHAR(1000) NULL,
+    provider_message_id NVARCHAR(255) NULL,
+    CONSTRAINT fk_nl_guardian FOREIGN KEY (guardian_id) REFERENCES Guardian(guardian_id) ON DELETE NO ACTION,
+    CONSTRAINT fk_nl_student FOREIGN KEY (student_id) REFERENCES Student(student_id) ON DELETE NO ACTION,
+    CONSTRAINT fk_nl_attendance FOREIGN KEY (attendance_id) REFERENCES Attendance_Record(attendance_id) ON DELETE NO ACTION,
+    CONSTRAINT fk_nl_event FOREIGN KEY (event_id) REFERENCES Notification_Event(event_id) ON DELETE NO ACTION,
+    CONSTRAINT ck_nl_source CHECK ((attendance_id IS NOT NULL AND event_id IS NULL) OR (attendance_id IS NULL AND event_id IS NOT NULL)),
+    CONSTRAINT ck_nl_channel CHECK (delivery_channel IN ('APP', 'SMS', 'MESSENGER', 'EMAIL')),
+    CONSTRAINT ck_nl_status CHECK (delivery_status IN ('PENDING', 'PROCESSING', 'SENT', 'FAILED', 'RETRYING'))
+);
+
+
+-- ==========================================
+-- 6. INDEXES FOR HIGH SCAN PERFORMANCE
+-- ==========================================
+
+CREATE INDEX idx_student_qr ON Student(qr_code_hash);
+CREATE INDEX idx_student_section ON Student(section_id);
+CREATE INDEX idx_attendance_student_time ON Attendance_Record(student_id, check_in_at);
+CREATE INDEX idx_attendance_section_time ON Attendance_Record(section_id, check_in_at);
+CREATE INDEX idx_notification_log_guardian ON Notification_Log(guardian_id, delivery_status);

@@ -95,7 +95,9 @@ namespace Inventory.API.Controllers
                 user.FullName,
                 user.Email,
                 user.Role,
-                account?.DatabaseName
+                account?.DatabaseName,
+                account?.AccountName,
+                account?.CompanyDescription
             });
         }
 
@@ -128,6 +130,132 @@ namespace Inventory.API.Controllers
             return Ok(new { user.UserId, user.Username, user.FullName, user.Email, user.Role });
         }
 
+        [HttpGet("accounts/{accountId:int}/users")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult GetAccountUsers(int accountId)
+        {
+            using var centralContext = CreateContext(_configuration.GetConnectionString("DefaultConnection"));
+            var account = centralContext.Accounts.FirstOrDefault(a => a.Id == accountId && a.IsActive);
+
+            if (account == null)
+                return NotFound("Account not found or inactive.");
+
+            var tenantConnection = new SqlConnectionStringBuilder(
+                _configuration.GetConnectionString("AccountConnection"))
+            {
+                InitialCatalog = account.DatabaseName
+            }.ConnectionString;
+
+            using var tenantContext = CreateContext(tenantConnection);
+            var users = tenantContext.Users
+                .AsNoTracking()
+                .OrderBy(u => u.FullName)
+                .Select(u => new
+                {
+                    u.UserId,
+                    u.Username,
+                    u.FullName,
+                    u.Email,
+                    u.Role,
+                    u.IsActive
+                })
+                .ToList();
+
+            return Ok(users);
+        }
+
+        [HttpPost("accounts/{accountId:int}/users")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult CreateAccountUser(int accountId, [FromBody] CreateAccountUserRequest request)
+        {
+            using var centralContext = CreateContext(_configuration.GetConnectionString("DefaultConnection"));
+            var account = centralContext.Accounts.FirstOrDefault(a =>
+                a.Id == accountId && a.IsActive && a.RegistrationStatus == "Approved");
+
+            if (account == null)
+                return NotFound("Account not found, inactive, or not approved.");
+
+            var tenantConnection = new SqlConnectionStringBuilder(
+                _configuration.GetConnectionString("AccountConnection"))
+            {
+                InitialCatalog = account.DatabaseName
+            }.ConnectionString;
+
+            using var tenantContext = CreateContext(tenantConnection);
+
+            if (tenantContext.Users.Any(u => u.Username == request.Username))
+                return Conflict("Username already exists.");
+
+            if (tenantContext.Users.Any(u => u.Email == request.Email))
+                return Conflict("Email already exists.");
+
+            CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            var createdBy = int.TryParse(User.FindFirstValue("UserId"), out var userId) ? userId : 0;
+
+            var user = new User
+            {
+                Username = request.Username,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                FullName = request.FullName,
+                Email = request.Email,
+                Role = request.Role,
+                IsActive = true,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = createdBy
+            };
+
+            tenantContext.Users.Add(user);
+            tenantContext.SaveChanges();
+
+            return Ok(new { user.UserId, user.Username, user.FullName, user.Email, user.Role });
+        }
+
+        [HttpPut("accounts/{accountId:int}/users/{userId:int}")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult UpdateAccountUser(int accountId, int userId, [FromBody] UpdateAccountUserRequest request)
+        {
+            using var centralContext = CreateContext(_configuration.GetConnectionString("DefaultConnection"));
+            var account = centralContext.Accounts.FirstOrDefault(a =>
+                a.Id == accountId && a.IsActive && a.RegistrationStatus == "Approved");
+
+            if (account == null)
+                return NotFound("Account not found, inactive, or not approved.");
+
+            var tenantConnection = new SqlConnectionStringBuilder(
+                _configuration.GetConnectionString("AccountConnection"))
+            {
+                InitialCatalog = account.DatabaseName
+            }.ConnectionString;
+
+            using var tenantContext = CreateContext(tenantConnection);
+            var user = tenantContext.Users.FirstOrDefault(u => u.UserId == userId);
+
+            if (user == null)
+                return NotFound("User not found.");
+
+            if (tenantContext.Users.Any(u => u.Email == request.Email && u.UserId != userId))
+                return Conflict("Email already exists.");
+
+            user.FullName = request.FullName;
+            user.Email = request.Email;
+            user.Role = request.Role;
+            user.IsActive = request.IsActive;
+            user.ModifiedDate = DateTime.UtcNow;
+            user.ModifiedBy = int.TryParse(User.FindFirstValue("UserId"), out var modifiedBy) ? modifiedBy : 0;
+
+            if (!string.IsNullOrWhiteSpace(request.Password))
+            {
+                CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+            }
+
+            tenantContext.SaveChanges();
+
+            return Ok(new { user.UserId, user.Username, user.FullName, user.Email, user.Role, user.IsActive });
+        }
+
         // Password hashing with salt
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
@@ -146,6 +274,15 @@ namespace Inventory.API.Controllers
                 var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
                 return computedHash.SequenceEqual(storedHash);
             }
+        }
+
+        private static InventoryDbContext CreateContext(string? connectionString)
+        {
+            var options = new DbContextOptionsBuilder<InventoryDbContext>()
+                .UseSqlServer(connectionString)
+                .Options;
+
+            return new InventoryDbContext(options);
         }
 
         [Authorize]

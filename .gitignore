@@ -1,5 +1,5 @@
 # Dependencies
-node_modules/
+**/node_modules/
 .pnp
 .pnp.js
 
@@ -7,15 +7,16 @@ node_modules/
 coverage/
 
 # Production/Build
-dist/
-build/
+**/dist/
+**/build/
+**/publish/
 
-# Environment Variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# Environment Variables and local settings
+**/.env
+**/.env.*
+!**/.env.example
+/Attendance.API/appsettings.json
+**/appsettings.Development.json
 
 # Debug logs
 npm-debug.log*
@@ -25,11 +26,14 @@ yarn-error.log*
 # Editor folders
 .vscode/
 .idea/
+.vs/
+**/*.user
+**/*.suo
 .DS_Store
 
 # Build output
-bin/
-obj/
+**/bin/
+**/obj/
 
 # Visual Studio / .NET
 *.dll
@@ -52,7 +56,6 @@ obj/
 
 # Rider / VS / misc
 *.idea/
-.vs/
 /Inventory.Integration.Test/obj/Debug/net8.0/Inventory.Integration.Test.AssemblyInfoInputs.cache
 /Inventory.Integration.Test/obj/Debug/net8.0/Inventory.Integration.Test.csproj.AssemblyReference.cache
 /Inventory.Integration.Test/obj/Debug/net8.0/Inventory.Integration.Test.csproj.FileListAbsolute.txt
@@ -154,6 +157,20 @@ obj/
 /Inventory.API/bin/Release/net8.0/Inventory.Handlers.dll
 /Inventory.API/bin/Release/net8.0/Inventory.Handlers.pdb
 /Inventory.API/bin/Release/net8.0/win-x64/Inventory.API.dll
+
+# Additional common ignores
+.vscode/
+.turbo/
+.next/
+.parcel-cache/
+.cache/
+.eslintcache
+*.pfx
+*.key
+*.pem
+*.log
+/uploads/
+/media/
 /Inventory.API/bin/Release/net8.0/win-x64/Inventory.API.exe
 /Inventory.API/bin/Release/net8.0/win-x64/Inventory.API.pdb
 /Inventory.API/bin/Release/net8.0/win-x64/Inventory.Contract.dll
@@ -169,20 +186,13 @@ obj/
 /Inventory.API/obj/Release/net8.0/ref/Inventory.API.dll
 
 
-# Build folders
-bin/
-obj/
-
-# Publish output
-publish/
-
-# .NET artifacts
-*.dll
-*.exe
-*.pdb
-
-# Optional (Visual Studio)
-.vs/
+# Build folders and .NET artifacts
+**/bin/
+**/obj/
+**/publish/
+**/*.dll
+**/*.exe
+**/*.pdb
 /Inventory.API/obj/Release/net8.0/refint/Inventory.API.dll
 /Inventory.API/obj/Release/net8.0/win-x64/PubTmp/Out/Inventory.API.exe
 /Inventory.API/obj/Release/net8.0/win-x64/PubTmp/Out/Inventory.API.pdb
